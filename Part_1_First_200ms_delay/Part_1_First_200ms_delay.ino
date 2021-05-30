@@ -2,6 +2,32 @@
 
 #include <FastLED.h>
 
+#include <TimeLib.h>
+
+
+//Libraries needed for scrolling text
+#include <Adafruit_GFX.h>
+#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_NeoPixel.h>
+
+#ifndef PSTR
+ #define PSTR // Make Arduino Due happy
+#endif
+
+#define PiN 5
+
+//Declare matrix needed to display information
+//First two parameters give width and height of the matrix
+//Fourth parameter gives the matrix layout
+Adafruit_NeoMatrix Mode_Info = Adafruit_NeoMatrix(5, 5, PiN,
+  NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
+ NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
+  NEO_KHZ800           + NEO_GRB );
+
+//define an array for displaying colors on the screen
+const uint16_t colors[] = {
+  Mode_Info.Color(255, 0, 0), Mode_Info.Color(0, 255, 0), Mode_Info.Color(0, 0, 255) };
+
 // Inplementing Interrupt Service Routine for detecting button pressed during strobe
 // Reference is from https://lastminuteengineers.com/handling-esp32-gpio-interrupts-tutorial/
 
@@ -29,11 +55,25 @@ void setup() {
   M5.IMU.Init();
   pinMode(main_btn.PIN, INPUT_PULLUP);
   attachInterrupt(main_btn.PIN, isr, FALLING); // Attaching the ISR to the button
-  delay(50);
+
+   //initializing the matrix for displaying info
+  Mode_Info.begin();
+  Mode_Info.setTextWrap(false);
+  Mode_Info.setBrightness(20);
+  Mode_Info.setTextColor(colors[0]);
 }
+
+uint8_t case_code = 0; // Denoting the current case of the display
+
+int z    = Mode_Info.width();
+int y = 0;
+unsigned long CurrentTime;
 
 // Detecting constantly for pressed button, change the case accordingly. 
 void loop() {
+
+  CurrentTime = millis();
+  
   float accX, accY, accZ;
   
   switch (main_btn.case_code) 
@@ -50,12 +90,37 @@ void loop() {
         }
         
     case 1:
+
+        M5.dis.fillpix(0xff0000); // Strobe with red colour
         for (;;)
         {
-          M5.dis.fillpix(0xff0000); // Strobe with red colour
-          delay(200);
-          M5.dis.clear();
-          delay(200);
+          
+         
+          if (millis()>=CurrentTime+200){
+              M5.dis.clear();  
+              CurrentTime=millis();            
+              }
+
+            if (millis()>=CurrentTime+100 && millis()<CurrentTime+200){
+               M5.dis.fillpix(0xff0000);                            
+            }
+
+              
+             //code needed for scrolling text 
+            Mode_Info.fillScreen(0);
+            Mode_Info.setCursor(z, 0);
+            Mode_Info.print(F("MANUAL REAR STROBE"));
+             if(--z < -36) {
+              z = Mode_Info.width();
+              if(++y >= 3){ 
+              y = 0;
+              }
+             Mode_Info.setTextColor(colors[y]);
+             }
+             Mode_Info.show();
+           
+             
+            
           if (main_btn.pressed) {
             main_btn.pressed = false;
             break;
@@ -64,12 +129,31 @@ void loop() {
         break;
 
      case 2:
+
+        M5.dis.fillpix(0xffffff); // Strobe with white colour
         for (;;)
         {
-          M5.dis.fillpix(0xffffff); // Strobe with white colour
-          delay(200);
-          M5.dis.clear();
-          delay(200);
+          if (millis()>=CurrentTime+200){
+              M5.dis.clear();  
+              CurrentTime=millis();            
+            }
+
+             if (millis()>=CurrentTime+100 && millis()<CurrentTime+200){
+               M5.dis.fillpix(0xff0000);                            
+            }
+
+             Mode_Info.fillScreen(0);
+            Mode_Info.setCursor(z, 0);
+             Mode_Info.print(F("MANUAL FRONT STROBE"));
+             if(--z < -36) {
+              z = Mode_Info.width();
+              if(++y >= 3){ 
+              y = 0;
+              }
+             Mode_Info.setTextColor(colors[y]);
+             }
+             Mode_Info.show();
+            
           if (main_btn.pressed) {
             main_btn.pressed = false;
             break;
@@ -82,18 +166,39 @@ void loop() {
 // meaning that it will be more than 2.5 m/s^2. 2.5^2 = 6.25. 
 
      case 3:
+
+        M5.dis.fillpix(0xff0000); // Strobe with red colour
         for (;;)
         {
-          M5.dis.fillpix(0xff0000); // Strobe with red colour
-          delay(200);
+            Mode_Info.fillScreen(0);
+            Mode_Info.setCursor(z, 0);
+             Mode_Info.print(F("AUTOMATIC REAR MODE"));
+             if(--z < -36) {
+              z = Mode_Info.width();
+              if(++y >= 3){ 
+              y = 0;
+              }
+             Mode_Info.setTextColor(colors[y]);
+             }
+             Mode_Info.show();
+          
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           // Taking the 3D acceleration as a vector and calculating the square of its magnitude
           if (accX * accX + accY * accY + accZ * accZ > 6.25) {
             continue;
           }
           else {
+            CurrentTime=millis();
             M5.dis.clear();
-            delay(200);
+            for (;;){              
+              if (millis()>=CurrentTime+200){
+              M5.dis.fillpix(0xff0000);  
+              CurrentTime=millis(); 
+              break;           
+            }
+           }
+            
+            
           }
           if (main_btn.pressed) {
             main_btn.pressed = false;
@@ -103,18 +208,35 @@ void loop() {
         break;
         
      case 4:
+         M5.dis.fillpix(0xffffff); // Strobe with white colour
         for (;;)
         {
-          M5.dis.fillpix(0xffffff); // Strobe with white colour
-          delay(200);
+          Mode_Info.fillScreen(0);
+            Mode_Info.setCursor(z, 0);
+             Mode_Info.print(F("AUTOMATIC FRONT MODE"));
+             if(--z < -36) {
+              z = Mode_Info.width();
+              if(++y >= 3){ 
+              y = 0;
+              }
+             Mode_Info.setTextColor(colors[y]);
+             }
+             Mode_Info.show();
+          
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           // Taking the 3D acceleration as a vector and calculating the square of its magnitude
           if (accX * accX + accY * accY + accZ * accZ > 6.25) {
             continue;
           }
           else {
+           CurrentTime=millis();
             M5.dis.clear();
-            delay(200);
+            for (;;){              
+              if (millis()>=CurrentTime+200){
+              M5.dis.fillpix(0xffffff);  
+              CurrentTime=millis(); 
+              break;           
+            }
           }
           if (main_btn.pressed) {
             main_btn.pressed = false;
@@ -128,4 +250,5 @@ void loop() {
 
   M5.update();
   }
+}
 }
