@@ -2,6 +2,9 @@
 
 #include <FastLED.h>
 
+#include <TimeLib.h>
+
+
 //Libraries needed for scrolling text
 #include <Adafruit_GFX.h>
 #include <Adafruit_NeoMatrix.h>
@@ -41,22 +44,30 @@ uint8_t case_code = 0; // Denoting the current case of the display
 
 int z    = Mode_Info.width();
 int y = 0;
+unsigned long CurrentTime;
+
 
 void loop() {
   // put your main code here, to run repeatedly:
+  CurrentTime = millis();
   if (M5.Btn.wasPressed()) // Detecting if the button is pressed
   {
 
     switch (case_code) 
     {
       case 0:
+          M5.dis.fillpix(0xff0000); // Strobe with red colour
           for (;M5.Btn.wasPressed();)
-          {
-            M5.dis.fillpix(0xff0000); // Strobe with red colour
-           
-            delay(200);
-            M5.dis.clear();
-            delay(200);
+          {           
+            if (millis()>=CurrentTime+200){
+              M5.dis.clear();  
+              CurrentTime=millis();            
+            }
+            
+            if (millis()>=CurrentTime+100 && millis()<CurrentTime+200){
+               M5.dis.fillpix(0xff0000);                            
+            }
+            
 
             Mode_Info.fillScreen(0);
             Mode_Info.setCursor(z, 0);
@@ -70,17 +81,23 @@ void loop() {
              }
              Mode_Info.show();
            
-             delay(100);
+             
           }
           break;
 
        case 1:
+
+          M5.dis.fillpix(0xffffff); // Strobe with white colour
           for (;M5.Btn.wasPressed();)
           {
-            M5.dis.fillpix(0xffffff); // Strobe with white colour
-            
-            delay(200);
-            M5.dis.clear();
+            if (millis()>=CurrentTime+200){
+              M5.dis.clear();  
+              CurrentTime=millis();            
+            }
+
+             if (millis()>=CurrentTime+100 && millis()<CurrentTime+200){
+               M5.dis.fillpix(0xff0000);                            
+            }
 
              Mode_Info.fillScreen(0);
             Mode_Info.setCursor(z, 0);
@@ -93,7 +110,7 @@ void loop() {
              Mode_Info.setTextColor(colors[y]);
              }
              Mode_Info.show();
-            delay(200);
+            
           }
           break;
 
