@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
-//#include <M5Stack.h>
 #include <M5Atom.h>
 #include <FastLED.h>
 
-=======
-#include <FastLED.h>
-
-#include <M5Atom.h>
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_NeoMatrix.h>
@@ -22,9 +16,9 @@
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
 Adafruit_NeoMatrix Mode_Info = Adafruit_NeoMatrix(5, 5, PiN,
-                               NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
+                               NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
                                NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
-                               NEO_KHZ800           + NEO_GRB );
+                               NEO_GRB          + NEO_KHZ800  );
 
 
 
@@ -32,59 +26,12 @@ float accX = 0, accY = 0, accZ = 0;
 float gyroX = 0, gyroY = 0, gyroZ = 0;
 float temp = 0;
 float AvgTemp=0;
->>>>>>> Stashed changes
+
 float AvgAccX = 0.0F;
 float AvgAccY = 0.0F;
 float AvgAccZ = 0.0F;
 
-<<<<<<< Updated upstream
 
-// the setup routine runs once when M5Stack starts up
-void setup(){
-
-  // Initialize the M5Stack object
-  M5.begin(true, false, true);
-
-  //start with a black screen
-
-  M5.dis.fillpix(0x0000);
-
-}
-
-// the loop routine runs over and over again forever
-void loop() {
-    // put your main code here, to run repeatedly:
-
-    float accX = 0, accY = 0, accZ = 0;
-  M5.IMU.getAccelData(&accX, &accY, &accZ);
-  int n_average=15;
-  // Averaging 15 different acceleration data to determine when the object tilts
-  AvgAccZ = ((AvgAccZ * (n_average-1))+accZ)/n_average;
-  AvgAccY = ((AvgAccY * (n_average-1))+accY)/n_average;
-  AvgAccX = ((AvgAccX * (n_average-1))+accX)/n_average;
-
-  if (M5.Btn.wasPressed()){
-
-    for (;;){
-    //Write the code needed for showing the temperature when the button is pressed
-    
-
-    if(AvgAccZ > 0.7 && abs(AvgAccX) > 0.3){ // 0.3g = 0.27 deg tilt angle (perform the tasks below if the angle is greater than 0.27 degrees left or right
-
-        //show the code needed to change game mode
-      }
-
-
-    
-    
-    }
-  
- 
-
-  M5.update();
-}
-}
-=======
 //define an array for displaying colors on the screen
 const uint16_t colors[] = {
   Mode_Info.Color(255, 0, 0), Mode_Info.Color(0, 255, 0), Mode_Info.Color(0, 0, 255)
@@ -137,7 +84,7 @@ void loop()
           Mode_Info.fillScreen(0);
           Mode_Info.setCursor(z, 0);
           Mode_Info.printf("Temperature : %.2f C", temp);
-          if (--z < -36) {
+          if (--z < -76) {
             z = Mode_Info.width();
             if (++y >= 3) {
               y = 0;
@@ -166,6 +113,7 @@ void loop()
 
         case 1:
         for (;;) {
+        
           M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
           Mode_Info.fillScreen(0);
           Mode_Info.setCursor(z, 0);
@@ -192,7 +140,7 @@ void loop()
             break; 
 
           
-
+          }
 
 
         }
@@ -300,11 +248,10 @@ void loop()
 
 
 
-
+M5.update();
 
 }
   
  
 
  
->>>>>>> Stashed changes
