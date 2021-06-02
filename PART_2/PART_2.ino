@@ -15,10 +15,10 @@
 //Declare matrix needed to display information
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5,5, PiN,
-                               NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
-                               NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
-                               NEO_GRB          + NEO_KHZ800  );
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
+                            NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
+                            NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
+                            NEO_GRB          + NEO_KHZ800  );
 
 
 
@@ -31,7 +31,7 @@ float AvgAccX = 0.0F;
 float AvgAccY = 0.0F;
 float AvgAccZ = 0.0F;
 unsigned long CurrentTime;
-unsigned long PreviousTime=0;
+unsigned long PreviousTime = 0;
 
 
 //define an array for displaying colors on the screen
@@ -61,7 +61,8 @@ int case_code = 0;
 
 void loop()
 {
-  M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
+  
+  /*M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
   M5.IMU.getAccelData(&accX, &accY, &accZ);
   M5.IMU.getTempData(&temp);
 
@@ -72,7 +73,7 @@ void loop()
   // Averaging 15 different acceleration data to determine when the object tilts
   AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
   AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;*/
 
 
 
@@ -82,6 +83,9 @@ void loop()
 
       case 0:
         for (;;) {
+
+          CurrentTime = millis();
+
           M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           M5.IMU.getTempData(&temp);
@@ -95,9 +99,9 @@ void loop()
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-          if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3 && CurrentTime-PreviousTime>=Interval) { // 0.3g = 27deg tilt angle
-            M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            M5.IMU.getTempData(&temp);
+
+          if (CurrentTime - PreviousTime > 200) {
+            PreviousTime = millis();
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
             matrix.printf("TEMPERATURE : %.2f ", temp);
@@ -110,23 +114,29 @@ void loop()
             }
             matrix.show();
 
-            delay (200);
- }
-
-            if (AvgAccX > 0.5) { //tilting to the right
-              case_code += 1;
-              break;
-
-              //show the code needed to change  mode
-            }
+          }
 
 
-            else if (AvgAccX < -0.5) {
-              case_code = 4;
-              break;
-            }
-         
+
+          if (AvgAccZ > 0.7 && AvgAccX > 0.3) { //tilting to the right
+            case_code += 1;
+            delay(2000);
+            break;
+
+            //show the code needed to change  mode
+          }
+
+
+          else if (AvgAccZ > 0.7 && AvgAccX < -0.3) {
+            case_code = 4;
+            delay(2000);
+            break;
+          }
+
+
         }
+        break;
+
 
 
 
@@ -137,20 +147,21 @@ void loop()
       case 1:
 
         for (;;) {
+
+          CurrentTime = millis();
+          
           M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           M5.IMU.getTempData(&temp);
 
-          Serial.printf("%.2f,%.2f,%.2f o/s \r\n", gyroX, gyroY, gyroZ);
-          Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
-
+         
           int n_average = 15;
           // Averaging 15 different acceleration data to determine when the object tilts
           AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-          if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
+          if (CurrentTime - PreviousTime > 200) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
@@ -163,10 +174,10 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-             
+
           }
 
-          if (AvgAccX > 0.5) { //tilting to the right
+          if (AvgAccZ > 0.7 && AvgAccX > 0.3) { //tilting to the right
             case_code += 1;
             break;
 
@@ -174,13 +185,14 @@ void loop()
           }
 
 
-          else if (AvgAccX < -0.5) {
+          else if (AvgAccZ > 0.7 && AvgAccX < -0.3) {
             case_code -= 1;
             break;
           }
 
         }
-
+        break;
+        
       case 2:
 
         for (;;) {
@@ -210,7 +222,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-             delay (100);
+            delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -257,7 +269,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-             delay (100);
+            delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -304,7 +316,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-             delay (100);
+            delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
