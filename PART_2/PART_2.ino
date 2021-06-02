@@ -15,7 +15,7 @@
 //Declare matrix needed to display information
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 3, PiN,
                             NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
                             NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
                             NEO_GRB          + NEO_KHZ800  );
