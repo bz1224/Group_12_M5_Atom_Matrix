@@ -81,7 +81,7 @@ void setup() {
   int z = Mode_Info.width();
   int y = 0;
 */
-int x=0;
+int x = 0;
 unsigned long CurrentTime;
 unsigned long PreviousTime;
 
@@ -181,16 +181,19 @@ void loop() {
       break;
 
     // For determining a braking event, https://www.sae.org/publications/technical-papers/content/2020-01-0876/
-    // suggests that deceleration of a bicycle is approximately between 0.25 to 0.36 g,
-    // meaning that it will be more than 2.5 m/s^2. 2.5^2 = 6.25.
+    // suggests that deceleration of a bicycle is approximately between 0.25 g to 0.36 g for rear brake,
+    // 0.40 g to 0.71 g for both brakes applied, meaning that the magnitude of acceleration vector will be more than 0.25 g.
+    // However, it is also possible for the magnitude be to greater than 0.25 g during accelerating process.
+    // Thus, the lower bound should be raised to (0.25 + 0.40) / 2 = 0.33 (a reasonable estimation).
+    // The unit of acceleration data from accelerometer is g.
 
     case 3:
 
       for (;;)
-      { x=0;
+      { x = 0;
         CurrentTime = millis();
         if (CurrentTime - PreviousTime >= interval1) {
-           setBuff(0xff, 0x00, 0x00);
+          setBuff(0xff, 0x00, 0x00);
           M5.dis.displaybuff(DisBuff); // Strobe with red colour
           PreviousTime = millis();
         }
@@ -211,44 +214,44 @@ void loop() {
           Mode_Info.show();
         */
         M5.IMU.getAccelData(&accX, &accY, &accZ);
-        // Taking the 3D acceleration as a vector and calculating the square of its magnitude
-        //Previous value = 6.25
-        if (accX * accX + accY * accY > 1) {
+        // Taking the X-Y acceleration as a vector and calculating the square of its magnitude
+        // Threshold squared magnitude = 0.33 * 0.33 = 0.1089
+        if (accX * accX + accY * accY > 0.1089) {
           for (;;) {
-             setBuff(0xff, 0x00, 0x00);
-          M5.dis.displaybuff(DisBuff); // Strobe with red colour
+            setBuff(0xff, 0x00, 0x00);
+            M5.dis.displaybuff(DisBuff); // Strobe with red colour
             M5.IMU.getAccelData(&accX, &accY, &accZ);
             if (main_btn.pressed) {
               main_btn.pressed = false;
-              x=1;
+              x = 1;
 
               break;
             }
-            
+
 
             if (accX * accX + accY * accY < 1) {
-                break;
-              }
+              break;
+            }
 
           }
 
 
         }
-        if(x==1){
+        if (x == 1) {
           break;
-          }
+        }
 
         if (main_btn.pressed) {
-            main_btn.pressed = false;
-            break;
-          }
+          main_btn.pressed = false;
+          break;
+        }
       }
       break;
 
     case 4:
       for (;;)
       {
-        x=0;
+        x = 0;
         CurrentTime = millis();
         if (CurrentTime - PreviousTime >= interval1) {
           M5.dis.fillpix(0xffffff); // Strobe with white colour
@@ -272,35 +275,35 @@ void loop() {
         */
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Taking the 3D acceleration as a vector and calculating the square of its magnitude
-        //Previous value = 6.25
-        if (accX * accX + accY * accY > 1) {
+        // Threshold squared magnitude = 0.33 * 0.33 = 0.1089
+        if (accX * accX + accY * accY > 0.1089) {
           for (;;) {
             M5.dis.fillpix(0xffffff); // Strobe with white colour
             M5.IMU.getAccelData(&accX, &accY, &accZ);
             if (main_btn.pressed) {
               main_btn.pressed = false;
-              x=1;
+              x = 1;
 
               break;
             }
-            
+
 
             if (accX * accX + accY * accY < 1) {
-                break;
-              }
+              break;
+            }
 
           }
 
 
         }
-        if(x==1){
+        if (x == 1) {
           break;
-          }
+        }
 
         if (main_btn.pressed) {
-            main_btn.pressed = false;
-            break;
-          }
+          main_btn.pressed = false;
+          break;
+        }
       }
       break;
 
