@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-
-
-
-#include <FastLED.h>
 
 #include <M5Atom.h>
-
-=======
-#include <M5Atom.h>
 #include <FastLED.h>
-
 #include <TimeLib.h>
->>>>>>> 568403475bd3d75085f936946b087df8072ec5ac
 #include <Adafruit_GFX.h>
+#include <Fonts/TomThumb.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -25,38 +16,23 @@
 //Declare matrix needed to display information
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
-<<<<<<< HEAD
-Adafruit_NeoMatrix Mode_Info = Adafruit_NeoMatrix(5, 5, PiN,
-                               NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
-                               NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
-                               NEO_GRB          + NEO_KHZ800 );
-=======
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 3, PiN,
-                            NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
-                            NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5,5, PiN,
+                            NEO_MATRIX_TOP    + NEO_MATRIX_RIGHT +
+                            NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
                             NEO_GRB          + NEO_KHZ800  );
->>>>>>> 568403475bd3d75085f936946b087df8072ec5ac
 
 
 
 float accX = 0, accY = 0, accZ = 0;
 float gyroX = 0, gyroY = 0, gyroZ = 0;
 float temp = 0;
-<<<<<<< HEAD
-float AvgTemp=0;
-=======
 float AvgTemp = 0;
->>>>>>> 568403475bd3d75085f936946b087df8072ec5ac
 
 float AvgAccX = 0.0F;
 float AvgAccY = 0.0F;
 float AvgAccZ = 0.0F;
-<<<<<<< HEAD
-
-=======
 unsigned long CurrentTime;
 unsigned long PreviousTime = 0;
->>>>>>> 568403475bd3d75085f936946b087df8072ec5ac
 
 
 //define an array for displaying colors on the screen
@@ -75,11 +51,12 @@ void setup()
   //initializing the matrix for displaying info
   matrix.begin();
   matrix.setTextWrap(false);
+ 
   matrix.setBrightness(20);
   matrix.setTextColor(colors[0]);
 }
 
-int z = matrix.width();
+int z = matrix.height();
 int y = 0;
 
 int case_code = 0;
@@ -87,7 +64,7 @@ int case_code = 0;
 void loop()
 {
   
-  /*M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
+  M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
   M5.IMU.getAccelData(&accX, &accY, &accZ);
   M5.IMU.getTempData(&temp);
 
@@ -98,7 +75,7 @@ void loop()
   // Averaging 15 different acceleration data to determine when the object tilts
   AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
   AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;*/
+  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
 
 
@@ -112,16 +89,6 @@ void loop()
           CurrentTime = millis();
 
           M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-<<<<<<< HEAD
-          Mode_Info.fillScreen(0);
-          Mode_Info.setCursor(z, 0);
-          //Mode_Info.printf("Temperature : %.2f C", temp);
-          Mode_Info.print(F("TEMP"));
-          if (--z < -36) {
-            z = Mode_Info.width();
-            if (++y >= 3) {
-              y = 0;
-=======
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           M5.IMU.getTempData(&temp);
 
@@ -146,7 +113,6 @@ void loop()
                 y = 0;
               }
               matrix.setTextColor(colors[y]);
->>>>>>> 568403475bd3d75085f936946b087df8072ec5ac
             }
             matrix.show();
 
@@ -154,7 +120,7 @@ void loop()
 
 
 
-          if (AvgAccZ > 0.7 && AvgAccX > 0.3) { //tilting to the right
+          if (AvgAccX > 0.4) { //tilting to the right
             case_code += 1;
             delay(2000);
             break;
@@ -163,7 +129,7 @@ void loop()
           }
 
 
-          else if (AvgAccZ > 0.7 && AvgAccX < -0.3) {
+          else if ( AvgAccX < -0.4) {
             case_code = 4;
             delay(2000);
             break;
@@ -171,8 +137,8 @@ void loop()
 
 
         }
-        break;
-
+      
+break;
 
 
 
@@ -202,7 +168,7 @@ void loop()
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
             matrix.printf("AVERAGE TEMPERATURE IS : % .2f C", AvgTemp);
-            if (--z < -76) {
+            if (--z < -106) {
               z = matrix.width();
               if (++y >= 3) {
                 y = 0;
@@ -210,24 +176,28 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
+            PreviousTime=millis();
 
           }
 
-          if (AvgAccZ > 0.7 && AvgAccX > 0.3) { //tilting to the right
+          if (AvgAccX > 0.3) { //tilting to the right
             case_code += 1;
             break;
+            delay(1000);
 
 
           }
 
 
-          else if (AvgAccZ > 0.7 && AvgAccX < -0.3) {
+          else if ( AvgAccX < -0.3) {
             case_code -= 1;
+            delay(1000);
             break;
           }
+          break;
 
         }
-        break;
+        
         
       case 2:
 
@@ -250,7 +220,7 @@ void loop()
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
             matrix.printf("Mode 3");
-            if (--z < -76) {
+            if (--z < -106) {
               z = matrix.width();
               if (++y >= 3) {
                 y = 0;
@@ -258,7 +228,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-            delay (100);
+            PreviousTime=millis();
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -275,6 +245,7 @@ void loop()
           }
 
         }
+        break;
 
 
       case 3:
@@ -297,7 +268,7 @@ void loop()
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
             matrix.printf("Mode 4");
-            if (--z < -76) {
+            if (--z < -106) {
               z = matrix.width();
               if (++y >= 3) {
                 y = 0;
@@ -305,7 +276,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-            delay (100);
+            PreviousTime=millis();
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -378,17 +349,76 @@ void loop()
 
 
 
-<<<<<<< HEAD
-
-M5.update();
-  }
-}
-  
- 
-
- 
-=======
   M5.update();
 
 }
->>>>>>> 568403475bd3d75085f936946b087df8072ec5ac
+
+/*
+#include <Adafruit_GFX.h>
+#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_NeoPixel.h>
+#include <Fonts/TomThumb.h>
+#ifndef PSTR
+ #define PSTR // Make Arduino Due happy
+#endif
+
+#define PIN 27
+
+// MATRIX DECLARATION:
+// Parameter 1 = width of NeoPixel matrix
+// Parameter 2 = height of matrix
+// Parameter 3 = pin number (most are valid)
+// Parameter 4 = matrix layout flags, add together as needed:
+//   NEO_MATRIX_TOP, NEO_MATRIX_BOTTOM, NEO_MATRIX_LEFT, NEO_MATRIX_RIGHT:
+//     Position of the FIRST LED in the matrix; pick two, e.g.
+//     NEO_MATRIX_TOP + NEO_MATRIX_LEFT for the top-left corner.
+//   NEO_MATRIX_ROWS, NEO_MATRIX_COLUMNS: LEDs are arranged in horizontal
+//     rows or in vertical columns, respectively; pick one or the other.
+//   NEO_MATRIX_PROGRESSIVE, NEO_MATRIX_ZIGZAG: all rows/columns proceed
+//     in the same order, or alternate lines reverse direction; pick one.
+//   See example below for these values in action.
+// Parameter 5 = pixel type flags, add together as needed:
+//   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
+//   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
+//   NEO_GRBW    Pixels are wired for GRBW bitstream (RGB+W NeoPixel products)
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
+
+
+// Example for NeoPixel Shield.  In this application we'd like to use it
+// as a 5x8 tall matrix, with the USB port positioned at the top of the
+// Arduino.  When held that way, the first pixel is at the top right, and
+// lines are arranged in columns, progressive order.  The shield uses
+// 800 KHz (v2) pixels that expect GRB color data.
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PIN,
+  NEO_MATRIX_TOP    + NEO_MATRIX_RIGHT +
+  NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
+  NEO_GRB            + NEO_KHZ800);
+
+const uint16_t colors[] = {
+  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
+
+void setup() {
+  matrix.begin();
+  matrix.setTextWrap(false);
+  matrix.setFont(&TomThumb);
+  matrix.setBrightness(20);
+  matrix.setTextColor(colors[0]);
+}
+
+int x   = matrix.height();
+int pass = 0;
+
+void loop() {
+  matrix.fillScreen(0);
+  matrix.setCursor(x, matrix.height());
+  matrix.print(F("Hello World"));
+  if(--x < -60) {
+    x = matrix.width();
+    if(++pass >= 3) pass = 0;
+    matrix.setTextColor(colors[pass]);
+  }
+  matrix.show();
+  delay(200);
+}
+*/
