@@ -10,12 +10,12 @@
 #define PSTR // Make Arduino Due happy
 #endif
 
-#define PiN 5
+#define PiN 27
 
 //Declare matrix needed to display information
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
-Adafruit_NeoMatrix Mode_Info = Adafruit_NeoMatrix(5, 5, PiN,
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
                                NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
                                NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
                                NEO_GRB          + NEO_KHZ800  );
@@ -34,7 +34,7 @@ float AvgAccZ = 0.0F;
 
 //define an array for displaying colors on the screen
 const uint16_t colors[] = {
-  Mode_Info.Color(255, 0, 0), Mode_Info.Color(0, 255, 0), Mode_Info.Color(0, 0, 255)
+  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255)
 };
 
 
@@ -46,13 +46,13 @@ void setup()
 
 
   //initializing the matrix for displaying info
-  Mode_Info.begin();
-  Mode_Info.setTextWrap(false);
-  Mode_Info.setBrightness(20);
-  Mode_Info.setTextColor(colors[0]);
+  matrix.begin();
+  matrix.setTextWrap(false);
+  matrix.setBrightness(20);
+  matrix.setTextColor(colors[0]);
 }
 
-int z = Mode_Info.width();
+int z = matrix.width();
 int y = 0;
 
 int case_code = 0;
@@ -95,17 +95,17 @@ void loop()
 
           if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            Mode_Info.fillScreen(0);
-            Mode_Info.setCursor(z, 0);
-            Mode_Info.printf("Temperature : %.2f C", temp);
+            matrix.fillScreen(0);
+            matrix.setCursor(z, 0);
+            matrix.printf("Temperature : %.2f C", temp);
             if (--z < -76) {
-              z = Mode_Info.width();
+              z = matrix.width();
               if (++y >= 3) {
                 y = 0;
               }
-              Mode_Info.setTextColor(colors[y]);
+              matrix.setTextColor(colors[y]);
             }
-            Mode_Info.show();
+            matrix.show();
 
 
             if (AvgAccX > 0.5) { //tilting to the right
@@ -147,17 +147,17 @@ void loop()
 
           if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            Mode_Info.fillScreen(0);
-            Mode_Info.setCursor(z, 0);
-            Mode_Info.printf("Average Temperature is : % .2f C", AvgTemp);
+            matrix.fillScreen(0);
+            matrix.setCursor(z, 0);
+            matrix.printf("Average Temperature is : % .2f C", AvgTemp);
             if (--z < -76) {
-              z = Mode_Info.width();
+              z = matrix.width();
               if (++y >= 3) {
                 y = 0;
               }
-              Mode_Info.setTextColor(colors[y]);
+              matrix.setTextColor(colors[y]);
             }
-            Mode_Info.show();
+            matrix.show();
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -193,17 +193,17 @@ void loop()
 
           if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            Mode_Info.fillScreen(0);
-            Mode_Info.setCursor(z, 0);
-            Mode_Info.printf("Mode 3");
+            matrix.fillScreen(0);
+            matrix.setCursor(z, 0);
+            matrix.printf("Mode 3");
             if (--z < -76) {
-              z = Mode_Info.width();
+              z = matrix.width();
               if (++y >= 3) {
                 y = 0;
               }
-              Mode_Info.setTextColor(colors[y]);
+              matrix.setTextColor(colors[y]);
             }
-            Mode_Info.show();
+            matrix.show();
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -239,17 +239,17 @@ void loop()
 
           if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            Mode_Info.fillScreen(0);
-            Mode_Info.setCursor(z, 0);
-            Mode_Info.printf("Mode 4");
+            matrix.fillScreen(0);
+            matrix.setCursor(z, 0);
+            matrix.printf("Mode 4");
             if (--z < -76) {
-              z = Mode_Info.width();
+              z = matrix.width();
               if (++y >= 3) {
                 y = 0;
               }
-              Mode_Info.setTextColor(colors[y]);
+              matrix.setTextColor(colors[y]);
             }
-            Mode_Info.show();
+            matrix.show();
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -285,21 +285,21 @@ void loop()
 
           if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            Mode_Info.fillScreen(0);
-            Mode_Info.setCursor(z, 0);
-            Mode_Info.printf("Mode 5");
+            matrix.fillScreen(0);
+            matrix.setCursor(z, 0);
+            matrix.printf("Mode 5");
             if (--z < -76) {
-              z = Mode_Info.width();
+              z = matrix.width();
               if (++y >= 3) {
                 y = 0;
               }
-              Mode_Info.setTextColor(colors[y]);
+              matrix.setTextColor(colors[y]);
             }
-            Mode_Info.show();
+            matrix.show();
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
-            case_code += 1;
+            case_code = 0;
             break;
 
 
