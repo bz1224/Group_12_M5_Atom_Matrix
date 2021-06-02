@@ -107,6 +107,8 @@ void loop()
             }
             matrix.show();
 
+            delay (100);
+
 
             if (AvgAccX > 0.5) { //tilting to the right
               case_code += 1;
@@ -158,6 +160,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
+             delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -204,6 +207,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
+             delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -250,6 +254,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
+             delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
@@ -296,6 +301,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
+             delay (100);
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
