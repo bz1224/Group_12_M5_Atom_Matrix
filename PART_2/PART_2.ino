@@ -1,7 +1,7 @@
 #include <M5Atom.h>
 #include <FastLED.h>
 
-
+#include <TimeLib.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
@@ -15,9 +15,9 @@
 //Declare matrix needed to display information
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
-                               NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
-                               NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5,5, PiN,
+                               NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
+                               NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
                                NEO_GRB          + NEO_KHZ800  );
 
 
@@ -30,6 +30,8 @@ float AvgTemp = 0;
 float AvgAccX = 0.0F;
 float AvgAccY = 0.0F;
 float AvgAccZ = 0.0F;
+unsigned long CurrentTime;
+unsigned long PreviousTime=0;
 
 
 //define an array for displaying colors on the screen
@@ -93,12 +95,13 @@ void loop()
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-          if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
+          if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3 && CurrentTime-PreviousTime>=Interval) { // 0.3g = 27deg tilt angle
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
+            M5.IMU.getTempData(&temp);
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
-            matrix.printf("Temperature : %.2f C", temp);
-            if (--z < -76) {
+            matrix.printf("TEMPERATURE : %.2f ", temp);
+            if (--z < -106) {
               z = matrix.width();
               if (++y >= 3) {
                 y = 0;
@@ -107,8 +110,8 @@ void loop()
             }
             matrix.show();
 
-            delay (100);
-
+            delay (200);
+ }
 
             if (AvgAccX > 0.5) { //tilting to the right
               case_code += 1;
@@ -122,7 +125,7 @@ void loop()
               case_code = 4;
               break;
             }
-          }
+         
         }
 
 
@@ -151,7 +154,7 @@ void loop()
             M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
             matrix.fillScreen(0);
             matrix.setCursor(z, 0);
-            matrix.printf("Average Temperature is : % .2f C", AvgTemp);
+            matrix.printf("AVERAGE TEMPERATURE IS : % .2f C", AvgTemp);
             if (--z < -76) {
               z = matrix.width();
               if (++y >= 3) {
@@ -160,7 +163,7 @@ void loop()
               matrix.setTextColor(colors[y]);
             }
             matrix.show();
-             delay (100);
+             
           }
 
           if (AvgAccX > 0.5) { //tilting to the right
