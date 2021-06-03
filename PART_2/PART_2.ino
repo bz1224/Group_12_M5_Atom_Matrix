@@ -138,7 +138,7 @@ void loop()
 
         }
       
-break;
+        break;
 
 
 
@@ -216,20 +216,53 @@ break;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
           if (AvgAccZ < 0.7 && abs(AvgAccX) < 0.3) { // 0.3g = 27deg tilt angle
-            M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-            matrix.fillScreen(0);
-            matrix.setCursor(z, 0);
-            matrix.printf("Mode 3");
-            if (--z < -106) {
-              z = matrix.width();
-              if (++y >= 3) {
-                y = 0;
+            M5.dis.drawpix(0, 0, 0x0000ff); // blue
+            M5.dis.drawpix(0, 1, 0x87cefa); // skyblue
+            M5.dis.drawpix(0, 2, 0x008000); // green
+            M5.dis.drawpix(0, 3, 0xffff00); // yellow
+            M5.dis.drawpix(0, 4, 0xff0000); // red
+
+            if (temp < 25) {
+              for (int i = 2; i < 5; i++){
+                for (int j = 1; j < 4; j++){
+                  M5.dis.drawpix(i, j, 0x0000ff);
+                }
               }
-              matrix.setTextColor(colors[y]);
             }
-            matrix.show();
-            PreviousTime=millis();
+
+            else if (temp >= 25 && temp < 30) {
+              for (int i = 2; i < 5; i++){
+                for (int j = 1; j < 4; j++){
+                  M5.dis.drawpix(i, j, 0x87cefa);
+                }
+              }
+            }
+
+            else if (temp >= 30 && temp < 35) {
+              for (int i = 2; i < 5; i++){
+                for (int j = 1; j < 4; j++){
+                  M5.dis.drawpix(i, j, 0x008000);
+                }
+              }
+            }
+
+            else if (temp >= 35 && temp < 40) {
+              for (int i = 2; i < 5; i++){
+                for (int j = 1; j < 4; j++){
+                  M5.dis.drawpix(i, j, 0xffff00);
+                }
+              }
+            }
+
+            else {
+              for (int i = 2; i < 5; i++){
+                for (int j = 1; j < 4; j++){
+                  M5.dis.drawpix(i, j, 0xff0000);
+                }
+              }
+            }
           }
+          M5.clear();
 
           if (AvgAccX > 0.5) { //tilting to the right
             case_code += 1;
@@ -293,6 +326,7 @@ break;
           }
 
         }
+        break;
 
 
       case 4:
@@ -340,6 +374,7 @@ break;
           }
 
         }
+        break;
 
 
     }
