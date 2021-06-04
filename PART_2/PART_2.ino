@@ -12,7 +12,7 @@
 #endif
 
 #define PiN 27
-
+#define OneHour 3600000
 //Declare matrix needed to display information
 //First two parameters give width and height of the matrix
 //Fourth parameter gives the matrix layout
@@ -30,6 +30,9 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
 float accX = 0, accY = 0, accZ = 0;
 float temp = 0;
 float AvgTemp = 0;
+float TempSum = 0;
+float TempOverLast24Hours [24] = {0};
+int i = 0,cnt=0,j=0;
 
 int ButtonPressedAtLeastOnce = 0;
 bool case_activated = false;
@@ -40,6 +43,7 @@ float AvgAccY = 0.0F;
 float AvgAccZ = 0.0F;
 unsigned long CurrentTime;
 unsigned long PreviousTime = 0;
+unsigned long TimeSinceLastTempReading = millis();
 
 
 //define an array for displaying colors on the screen
@@ -60,6 +64,8 @@ void setup()
 
   matrix.setBrightness(20);
   matrix.setTextColor(colors[0]);
+  M5.IMU.getTempData(&temp);
+  TempOverLast24Hours[0] = temp;
 }
 
 int z = matrix.height();
@@ -74,6 +80,25 @@ void loop()
 
   M5.IMU.getAccelData(&accX, &accY, &accZ);
   M5.IMU.getTempData(&temp);
+  //Averaging the temperature over last 24 hours
+  if (millis() >= TimeSinceLastTempReading + OneHour) {
+    if (i == 23) {
+      for ( cnt = 0; cnt = 22; cnt++) {
+        //remove the most outdated temp value and add the newest one
+        TempOverLast24Hours[cnt] = TempOverLast24Hours[cnt + 1];
+      }
+      TempOverLast24Hours[cnt + 1] = temp;
+    }
+
+
+    else if (i < 23) {
+
+      TempOverLast24Hours[i + 1] = temp;
+      i += 1;
+
+    }
+    TimeSinceLastTempReading = millis();
+  }
 
 
 
@@ -169,7 +194,8 @@ void loop()
       case 1:
 
         for (;;) {
-
+          TempSum = 0;
+          AvgTemp = 0;
 
           CurrentTime = millis();
 
@@ -178,12 +204,45 @@ void loop()
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           M5.IMU.getTempData(&temp);
 
+            //Averaging the temperature over last 24 hours
+  if (millis() >= TimeSinceLastTempReading + OneHour) {
+    if (i == 23) {
+      for ( cnt = 0; cnt = 22; cnt++) {
+        //remove the most outdated temp value and add the newest one
+        TempOverLast24Hours[cnt] = TempOverLast24Hours[cnt + 1];
+      }
+      TempOverLast24Hours[cnt + 1] = temp;
+    }
+
+
+    else if (i < 23) {
+
+      TempOverLast24Hours[i + 1] = temp;
+      i += 1;
+
+    }
+    TimeSinceLastTempReading = millis();
+  }
+
+
+          //Sum values of temp over last 24 hours
+          for (int j = 0; j < 23; j++) {
+            TempSum = TempOverLast24Hours[j];
+          }
+          AvgTemp = TempSum / 24;
+
+
+
+
+
 
           int n_average = 15;
           // Averaging 15 different acceleration data to determine when the object tilts
           AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+
+
 
 
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
