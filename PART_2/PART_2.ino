@@ -1,11 +1,21 @@
+#include <TFT_eSPI.h>
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_GrayOLED.h>
+#include <Adafruit_SPITFT.h>
+#include <Adafruit_SPITFT_Macros.h>
+#include <gfxfont.h>
+
+#include <Adafruit_NeoMatrix.h>
+#include <gamma.h>
+
+#include <Adafruit_NeoPixel.h>
+
+
 
 #include <M5Atom.h>
 #include <FastLED.h>
 #include <TimeLib.h>
-#include <Adafruit_GFX.h>
-#include <Fonts/TomThumb.h>
-#include <Adafruit_NeoMatrix.h>
-#include <Adafruit_NeoPixel.h>
 
 #ifndef PSTR
 #define PSTR // Make Arduino Due happy
@@ -21,7 +31,7 @@
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
 
-                            NEO_MATRIX_TOP    + NEO_MATRIX_RIGHT +
+                            NEO_MATRIX_TOP    + NEO_MATRIX_LEFT +
                             NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
                             NEO_GRB          + NEO_KHZ800  );
 
@@ -70,25 +80,26 @@ void setup()
 
   M5.IMU.Init();
 
-
   //initializing the matrix for displaying info
   matrix.begin();
   matrix.setTextWrap(false);
-
   matrix.setBrightness(20);
   matrix.setTextColor(colors[0]);
   M5.IMU.getTempData(&temp);
-  TempOverLast24Hours[0] = temp;
+  i = 0;
+  for (i = 0; i < 24; i++) {
+    TempOverLast24Hours[i] = temp;
+  }
 }
 
-int z = matrix.height();
+int z = matrix.height() - 1;
 int y = 0;
 
 int case_code = 0;
 
 void loop()
 {
-
+  i = 0;
   M5.dis.drawpix(0, 0xf000000);
 
   M5.IMU.getAccelData(&accX, &accY, &accZ);
@@ -227,13 +238,12 @@ void loop()
 
 
           }
-        }
-        case_activated = false;
+          }
+          case_activated = false;
 
-        break;
+          break;
 
-
-
+        
 
 
 
@@ -274,7 +284,7 @@ void loop()
 
           //Sum values of temp over last 24 hours
           for (int j = 0; j < 23; j++) {
-            TempSum = TempOverLast24Hours[j];
+            TempSum += TempOverLast24Hours[j];
           }
           AvgTemp = TempSum / 24;
 
@@ -300,7 +310,7 @@ void loop()
 
               matrix.fillScreen(0);
               matrix.setCursor(z, 0);
-              matrix.printf("AVERAGE TEMPERATURE IS : % .2f C", AvgTemp);
+              matrix.printf("AVG TEMP: % .2f C", AvgTemp);
               if (--z < -106) {
                 z = matrix.width();
                 if (++y >= 3) {
@@ -504,7 +514,10 @@ void loop()
 
 
 
-            M5.dis.displaybuff((uint8_t*)TempGraph);
+            i = 0;
+            for (i = 0; i < 77; i++) {
+              M5.dis.displaybuff((uint8_t *)TempGraph [i]);
+            }
 
 
             if (AvgAccX > 0.4) { //tilting to the right
