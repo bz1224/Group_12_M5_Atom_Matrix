@@ -32,7 +32,7 @@ float temp = 0;
 float AvgTemp = 0;
 float TempSum = 0;
 float TempOverLast24Hours [24] = {0};
-int i = 0,cnt=0,j=0;
+int i = 0, cnt = 0, j = 0, k = 0;
 
 int ButtonPressedAtLeastOnce = 0;
 bool case_activated = false;
@@ -51,6 +51,19 @@ const uint16_t colors[] = {
   matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255)
 };
 
+
+
+unsigned char TempGraph[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+};
+//3,6,9,12,15,18,75
 void setup()
 {
   M5.begin(true, false, true);
@@ -109,9 +122,43 @@ void loop()
   AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
 
+  CurrentTime = millis();
+  if (CurrentTime - PreviousTime >= 12000) {
+    k = 0;
+    for (k = 0; k < 71; k++) {
+      if (k % 15 != 0) {
+        TempGraph[k + 3] = TempGraph[k + 6];
+      }
+      else {
+        TempGraph[k] = 0x00;
+        TempGraph [75] = 0x00;
+      }
+    }
+
+    if (temp >= 20 && temp < 30) {
+
+      TempGraph [75] = 0xff;
+
+    }
 
 
+    else if (temp >= 30 && temp < 35) {
 
+      TempGraph [60] = 0xff;
+
+    }
+
+    else if (temp >= 35 && temp < 40) {
+      TempGraph[45] = 0xff;
+    }
+    else if (temp >= 40 && temp < 45) {
+      TempGraph [30] = 0xff;
+    }
+    else if (temp >= 45 && temp < 50) {
+      TempGraph[15] = 0xff;
+    }
+    PreviousTime = millis();
+  }
 
   if (M5.Btn.wasPressed() || ButtonPressedAtLeastOnce == 1 ) {
     ButtonPressedAtLeastOnce = 1;
@@ -204,25 +251,25 @@ void loop()
           M5.IMU.getAccelData(&accX, &accY, &accZ);
           M5.IMU.getTempData(&temp);
 
-            //Averaging the temperature over last 24 hours
-  if (millis() >= TimeSinceLastTempReading + OneHour) {
-    if (i == 23) {
-      for ( cnt = 0; cnt = 22; cnt++) {
-        //remove the most outdated temp value and add the newest one
-        TempOverLast24Hours[cnt] = TempOverLast24Hours[cnt + 1];
-      }
-      TempOverLast24Hours[cnt + 1] = temp;
-    }
+          //Averaging the temperature over last 24 hours
+          if (millis() >= TimeSinceLastTempReading + OneHour) {
+            if (i == 23) {
+              for ( cnt = 0; cnt = 22; cnt++) {
+                //remove the most outdated temp value and add the newest one
+                TempOverLast24Hours[cnt] = TempOverLast24Hours[cnt + 1];
+              }
+              TempOverLast24Hours[cnt + 1] = temp;
+            }
 
 
-    else if (i < 23) {
+            else if (i < 23) {
 
-      TempOverLast24Hours[i + 1] = temp;
-      i += 1;
+              TempOverLast24Hours[i + 1] = temp;
+              i += 1;
 
-    }
-    TimeSinceLastTempReading = millis();
-  }
+            }
+            TimeSinceLastTempReading = millis();
+          }
 
 
           //Sum values of temp over last 24 hours
@@ -396,10 +443,9 @@ void loop()
 
       case 3:
         for (;;) {
-          CurrentTime = millis();
 
-          M5.IMU.getAccelData(&accX, &accY, &accZ);
-          M5.IMU.getTempData(&temp);
+
+
 
 
           Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
@@ -410,23 +456,55 @@ void loop()
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
+          M5.IMU.getAccelData(&accX, &accY, &accZ);
+          M5.IMU.getTempData(&temp);
+
+          CurrentTime = millis();
+
+          if (CurrentTime - PreviousTime >= 12000) {
+            k = 0;
+            for (k = 0; k < 71; k++) {
+              if (k % 15 != 0) {
+                TempGraph[k + 3] = TempGraph[k + 6];
+              }
+              else {
+                TempGraph[k] = 0x00;
+                TempGraph [75] = 0x00;
+              }
+            }
+
+            if (temp >= 20 && temp < 30) {
+
+              TempGraph [75] = 0xff;
+
+            }
+
+
+            else if (temp >= 30 && temp < 35) {
+
+              TempGraph [60] = 0xff;
+
+            }
+
+            else if (temp >= 35 && temp < 40) {
+              TempGraph[45] = 0xff;
+            }
+            else if (temp >= 40 && temp < 45) {
+              TempGraph [30] = 0xff;
+            }
+            else if (temp >= 45 && temp < 50) {
+              TempGraph[15] = 0xff;
+            }
+            PreviousTime = millis();
+          }
+
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
-            if (CurrentTime - PreviousTime > 200) {
 
-              matrix.fillScreen(0);
-              matrix.setCursor(z, 0);
-              matrix.printf("Mode 4");
-              if (--z < -106) {
-                z = matrix.width();
-                if (++y >= 3) {
-                  y = 0;
-                }
-                matrix.setTextColor(colors[y]);
-              }
-              matrix.show();
-              PreviousTime = millis();
-            }
+
+
+
+            M5.dis.displaybuff((uint8_t*)TempGraph);
 
 
             if (AvgAccX > 0.4) { //tilting to the right
