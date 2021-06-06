@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include <Adafruit_GFX.h>
 
 
@@ -18,6 +19,10 @@
 =======
 #include <TFT_eSPI.h>
 
+=======
+#include <TFT_eSPI.h>
+
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
 #include <Adafruit_GFX.h>
 #include <Adafruit_GrayOLED.h>
 #include <Adafruit_SPITFT.h>
@@ -29,6 +34,12 @@
 
 #include <Adafruit_NeoPixel.h>
 >>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
+
+
+
+#include <M5Atom.h>
+#include <FastLED.h>
+#include <TimeLib.h>
 
 
 
@@ -256,6 +267,10 @@ void loop()
 
       case 0:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        /*for (;;) {
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
 =======
         /*for (;;) {
 >>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
@@ -418,13 +433,99 @@ void loop()
               break;
             }
           }
+<<<<<<< HEAD
         }
         case_activated = false;
         break;
 
         
+=======
+          }
+          case_activated = false;
+
+          break;*/
+
+          for (;;) {
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
+
+          int n_average = 15;
+          // Averaging 15 different acceleration data to determine when the object tilts
+          AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+          AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+          AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+
+          M5.IMU.getAccelData(&accX, &accY, &accZ);
+          M5.IMU.getTempData(&temp);
+
+          CurrentTime = millis();
+
+          if (CurrentTime - PreviousTime >= 12000) {
+            k = 0;
+            for (k = 0; k < 71; k++) {
+              if ((k % 15) != 0 || k < 15) {
+                TempGraph[k + 3] = TempGraph[k + 6];
+              }
+              else {
+                TempGraph[k] = 0x00;
+                TempGraph [75] = 0x00;
+              }
+            }
+
+            if (temp >= 20 && temp < 30) {
+
+              TempGraph [75] = 0xff;
+
+            }
 
 
+            else if (temp >= 30 && temp < 35) {
+
+              TempGraph [60] = 0xff;
+
+            }
+
+            else if (temp >= 35 && temp < 40) {
+              TempGraph[45] = 0xff;
+            }
+            else if (temp >= 40 && temp < 45) {
+              TempGraph [30] = 0xff;
+            }
+            else if (temp >= 45 && temp < 50) {
+              TempGraph[15] = 0xff;
+            }
+            PreviousTime = millis();
+          }
+
+          if (abs(AvgAccX) < 0.4 || case_activated == true) {
+            case_activated = true;
+
+
+
+
+            i = 0;
+            for (i = 0; i < 77; i++) {
+              M5.dis.displaybuff((uint8_t *)TempGraph [i]);
+            }
+
+
+            if (AvgAccX > 0.4) { //tilting to the right
+              case_code += 1;
+              break;
+
+
+            }
+
+
+            else if (AvgAccX < -0.4) {
+              case_code -= 1;
+              break;
+            }
+          }
+        }
+        case_activated = false;
+        break;
+
+        
 
 
       case 1:
@@ -568,6 +669,7 @@ void loop()
           if (M5.Btn.wasPressed()) {
             for (;;) {
 
+<<<<<<< HEAD
               CurrentTime = millis();
 
 
@@ -576,6 +678,8 @@ void loop()
               M5.IMU.getAccelData(&accX, &accY, &accZ);
               M5.IMU.getTempData(&temp);
 =======
+=======
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
           int n_average = 15;
           // Averaging 15 different acceleration data to determine when the object tilts
           AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
@@ -692,6 +796,7 @@ void loop()
       case 3:
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         if (abs(AvgAccX) < 0.4 || case_activated == true) {
           case_activated = true;
@@ -704,6 +809,8 @@ void loop()
             for (;;) {
 
 =======
+=======
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
           int n_average = 15;
           // Averaging 15 different acceleration data to determine when the object tilts
           AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
@@ -791,13 +898,19 @@ void loop()
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
           else if ( AvgAccX < -0.4) { //tilting to the left
             case_code -= 1;
 =======
+=======
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
             i = 0;
             for (i = 0; i < 77; i++) {
               M5.dis.displaybuff((uint8_t *)TempGraph [i]);
             }
+<<<<<<< HEAD
+>>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
+=======
 >>>>>>> ce63b891cd4fc9d1c29317dc1b50ccbbee401e2d
 
             break;
