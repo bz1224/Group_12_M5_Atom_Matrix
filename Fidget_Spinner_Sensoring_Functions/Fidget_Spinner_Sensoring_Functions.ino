@@ -9,7 +9,7 @@
 #define hrs_per_day 24
 
 int per_hour_fidget_counter[hrs_per_day] = {0}; // Providing an array of counts per hour over the most recent 24 hours
-float gyroX, gyroY, gyroZ1, gyroZ2;
+float gyroX, gyroY, gyroZ1, gyroZ2; 
 unsigned long CurrentTime, PreviousTime, CurrentHour, PreviousHour;
 
 void setup() {
