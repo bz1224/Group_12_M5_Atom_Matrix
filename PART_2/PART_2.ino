@@ -52,7 +52,8 @@ float AvgAccZ = 0.0F;
 unsigned long CurrentTime;
 unsigned long PreviousTime = 0;
 unsigned long TimeSinceLastTempReading = millis();
-
+float TempF=0;
+       
 
 //define an array for displaying colors on the screen
 const uint16_t colors[] = {
@@ -226,11 +227,11 @@ void loop()
     }
     PreviousTime = millis();
   }
-
+  M5.dis.displaybuff(Case_i);
   if (M5.Btn.wasPressed() || ButtonPressedAtLeastOnce == 1 ) {
     ButtonPressedAtLeastOnce = 1;
 
-
+  
     switch (case_code) {
 
       case 0:
@@ -373,364 +374,43 @@ void loop()
               if (CurrentTime - PreviousTime > 200) { // 0.3g = 27deg tilt angle
 
 
-             
-                    matrix.fillScreen(0);
-                  matrix.setCursor(z, 0);
-                  matrix.printf("AVG TEMP: % .2f C", AvgTemp);
-                  if (--z < -106) {
-                    z = matrix.width();
-                    if (++y >= 3) {
-                      y = 0;
 
-                    }
-                    matrix.setTextColor(colors[y]);
-                  }
-                    matrix.show();
-                    PreviousTime = millis();
+                matrix.fillScreen(0);
+                matrix.setCursor(z, 0);
+                matrix.printf("AVG TEMP: % .2f C", AvgTemp);
+                if (--z < -106) {
+                  z = matrix.width();
+                  if (++y >= 3) {
+                    y = 0;
 
                   }
-
-
-                  if (abs(AvgAccZ) > 0.4) //return back to main menu
-                  {
-                    break;
-                  }
-
+                  matrix.setTextColor(colors[y]);
                 }
-              }
-
-              if (AvgAccX > 0.4) { //tilting to the right
-                case_code += 1;
-                break;
-
+                matrix.show();
+                PreviousTime = millis();
 
               }
 
 
-              else if ( AvgAccX < -0.4) { //tilting to the left
-                case_code -= 1;
+              if (abs(AvgAccZ) > 0.4) //return back to main menu
+              {
                 break;
               }
 
             }
+          }
 
-
-
-
-
-
-          case 2:
-
-
-            if (abs(AvgAccX) < 0.4 || case_activated == true) {
-              case_activated = true;
-
-
-
-              M5.dis.displaybuff(Case_iii);
-
-              if (M5.Btn.wasPressed()) {
-                for (;;) {
-
-                  CurrentTime = millis();
-
-                  
-
-                  M5.IMU.getAccelData(&accX, &accY, &accZ);
-                  M5.IMU.getTempData(&temp);
-                 
-                    int n_average = 15;
-                  // Averaging 15 different acceleration data to determine when the object tilts
-                  AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-                  AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-                  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
-                  
-
-
-                  Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
-
-                  
-
-                  if (CurrentTime - PreviousTime > 200) {
-
-
-                    M5.dis.drawpix(0, 4, 0x0000ff); // blue
-                    M5.dis.drawpix(0, 3, 0xce87fa); // skyblue
-                    M5.dis.drawpix(0, 2, 0xff0000); // green
-                    M5.dis.drawpix(0, 1, 0xffff00); // yellow
-                    M5.dis.drawpix(0, 0, 0x00ff00); // red
-
-                    if (temp < 25) {
-
-                      for (int i = 2; i < 5; i++) {
-                        for (int j = 1; j < 4; j++) {
-
-                          M5.dis.drawpix(i, j, 0x0000ff);
-                        }
-                      }
-                    }
-
-                    else if (temp >= 25 && temp < 30) {
-
-                      for (int i = 2; i < 5; i++) {
-                        for (int j = 1; j < 4; j++) {
-
-                          M5.dis.drawpix(i, j, 0xce87fa);
-                        }
-                      }
-                    }
-
-                    else if (temp >= 30 && temp < 35) {
-
-                      for (int i = 2; i < 5; i++) {
-                        for (int j = 1; j < 4; j++) {
-
-                          M5.dis.drawpix(i, j, 0xff0000);
-                        }
-                      }
-                    }
-
-                    else if (temp >= 35 && temp < 40) {
-
-                      for (int i = 2; i < 5; i++) {
-                        for (int j = 1; j < 4; j++) {
-
-                          M5.dis.drawpix(i, j, 0xffff00);
-                        }
-                      }
-                    }
-
-                    else {
-
-                      for (int i = 2; i < 5; i++) {
-                        for (int j = 1; j < 4; j++) {
-
-                          M5.dis.drawpix(i, j, 0x00ff00);
-                        }
-                      }
-                    }
-                    PreviousTime = millis();
-                  }
-
-
-
-                  M5.dis.drawpix(0, 0x000000);
-
-
-                  if (abs(AvgAccZ) > 0.4) //return back to main menu
-                  {
-                    break;
-                  }
-
-                }
-              }
-
-              if (AvgAccX > 0.4) { //tilting to the right
-                case_code += 1;
-                break;
-
-
-              }
-
-
-              else if ( AvgAccX < -0.4) { //tilting to the left
-                case_code -= 1;
-                break;
-              }
-
-            }
-
-
-
-
-
-
-          case 3:
-
-           
-            if (abs(AvgAccX) < 0.4 || case_activated == true) {
-              case_activated = true;
-
-
-
-              M5.dis.displaybuff(Case_iv);
-
-              if (M5.Btn.wasPressed()) {
-                for (;;) {
-
-                 
-                  Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
-
-                  int n_average = 15;
-                  // Averaging 15 different acceleration data to determine when the object tilts
-                  AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-                  AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-                  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
-
-                  M5.IMU.getAccelData(&accX, &accY, &accZ);
-                  M5.IMU.getTempData(&temp);
-
-                  CurrentTime = millis();
-
-                  if (CurrentTime - PreviousTime >= 12000) {
-                    k = 0;
-                    for (k = 0; k < 71; k++) {
-                      if ((k % 15) != 0 || k == 0) {
-                        if (TempGraph [k + 6] == 255) {
-                          TempGraph[k + 3] = 0xff;
-                        }
-                        else if (TempGraph [k + 6] == 0) {
-                          TempGraph[k + 3] = 0x00;
-                        }
-                      }
-
-
-                      else {
-                        TempGraph[k] = 0x00;
-
-                      }
-                      TempGraph [75] = 0x00;
-                    }
-                  }
-
-                  if (temp >= 20 && temp < 30) {
-
-                    TempGraph [75] = 0xff;
-
-                  }
-
-
-                  else if (temp >= 30 && temp < 35) {
-
-                    TempGraph [60] = 0xff;
-
-                  }
-
-                  
-                  else if (temp >= 35 && temp < 40) {
-                    TempGraph[45] = 0xff;
-                  }
-                  else if (temp >= 40 && temp < 45) {
-                    TempGraph [30] = 0xff;
-                  }
-                  else if (temp >= 45 && temp < 50) {
-                    TempGraph[15] = 0xff;
-                  }
-                  PreviousTime = millis();
-
-                 
-                   
-
-
-
-
-
-
-                  M5.dis.displaybuff(TempGraph);
-
-
-                  if (abs(AvgAccZ) > 0.4) //return back to main menu
-                  {
-                    break;
-                  }
-
-                }
-              }
-              if (AvgAccX > 0.4) { //tilting to the right
-                case_code += 1;
-
-                break;
-
-              }
-
-
-
-              else if ( AvgAccX < -0.4) { //tilting to the left
-                case_code -= 1;
-
-                break;
-              }
-            }
-
-
-
-
-
-
-
-          case 4:
-
-            if (abs(AvgAccX) < 0.4 || case_activated == true) {
-              case_activated = true;
-
-
-
-              M5.dis.displaybuff(Case_v);
-
-              if (M5.Btn.wasPressed()) {
-                for (;;) {
-
-                  CurrentTime = millis();
-
-                  M5.IMU.getAccelData(&accX, &accY, &accZ);
-                  M5.IMU.getTempData(&temp);
-
-
-
-
-                  int n_average = 15;
-                  // Averaging 15 different acceleration data to determine when the object tilts
-                  AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-                  AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-                  AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
-
-
-                  if (CurrentTime - PreviousTime > 200) {
-
-
-
-
-                    matrix.fillScreen(0);
-                    matrix.setCursor(z, 0);
-                    matrix.printf("Mode 5");
-                    if (--z < -76) {
-                      z = matrix.width();
-                      if (++y >= 3) {
-                        y = 0;
-                      }
-                      matrix.setTextColor(colors[y]);
-                    }
-                    matrix.show();
-                    PreviousTime = millis();
-                  }
-
-                  if (abs(AvgAccZ) > 0.4) //return back to main menu
-                  {
-                    break;
-                  }
-
-                }
-              }
-              if (AvgAccX > 0.4) { //tilting to the right
-                case_code = 0;
-
-                break;
-
-              }
-
-
-
-              else if ( AvgAccX < -0.4) { //tilting to the left
-                case_code -= 1;
-
-                break;
-              }
-            }
-
-          default:
+          if (AvgAccX > 0.4) { //tilting to the right
+            case_code += 1;
             break;
 
 
+          }
+
+
+          else if ( AvgAccX < -0.4) { //tilting to the left
+            case_code -= 1;
+            break;
           }
 
         }
@@ -738,6 +418,339 @@ void loop()
 
 
 
-        M5.update();
+
+
+      case 2:
+
+
+        if (abs(AvgAccX) < 0.4 || case_activated == true) {
+          case_activated = true;
+
+
+
+          M5.dis.displaybuff(Case_iii);
+
+          if (M5.Btn.wasPressed()) {
+            for (;;) {
+
+              CurrentTime = millis();
+
+
+
+              M5.IMU.getAccelData(&accX, &accY, &accZ);
+              M5.IMU.getTempData(&temp);
+
+              int n_average = 15;
+              // Averaging 15 different acceleration data to determine when the object tilts
+              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+
+
+
+              Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
+
+
+
+              if (CurrentTime - PreviousTime > 200) {
+
+
+                M5.dis.drawpix(0, 4, 0x0000ff); // blue
+                M5.dis.drawpix(0, 3, 0xce87fa); // skyblue
+                M5.dis.drawpix(0, 2, 0xff0000); // green
+                M5.dis.drawpix(0, 1, 0xffff00); // yellow
+                M5.dis.drawpix(0, 0, 0x00ff00); // red
+
+                if (temp < 25) {
+
+                  for (int i = 2; i < 5; i++) {
+                    for (int j = 1; j < 4; j++) {
+
+                      M5.dis.drawpix(i, j, 0x0000ff);
+                    }
+                  }
+                }
+
+                else if (temp >= 25 && temp < 30) {
+
+                  for (int i = 2; i < 5; i++) {
+                    for (int j = 1; j < 4; j++) {
+
+                      M5.dis.drawpix(i, j, 0xce87fa);
+                    }
+                  }
+                }
+
+                else if (temp >= 30 && temp < 35) {
+
+                  for (int i = 2; i < 5; i++) {
+                    for (int j = 1; j < 4; j++) {
+
+                      M5.dis.drawpix(i, j, 0xff0000);
+                    }
+                  }
+                }
+
+                else if (temp >= 35 && temp < 40) {
+
+                  for (int i = 2; i < 5; i++) {
+                    for (int j = 1; j < 4; j++) {
+
+                      M5.dis.drawpix(i, j, 0xffff00);
+                    }
+                  }
+                }
+
+                else {
+
+                  for (int i = 2; i < 5; i++) {
+                    for (int j = 1; j < 4; j++) {
+
+                      M5.dis.drawpix(i, j, 0x00ff00);
+                    }
+                  }
+                }
+                PreviousTime = millis();
+              }
+
+
+
+              M5.dis.drawpix(0, 0x000000);
+
+
+              if (abs(AvgAccZ) > 0.4) //return back to main menu
+              {
+                break;
+              }
+
+            }
+          }
+
+          if (AvgAccX > 0.4) { //tilting to the right
+            case_code += 1;
+            break;
+
+
+          }
+
+
+          else if ( AvgAccX < -0.4) { //tilting to the left
+            case_code -= 1;
+            break;
+          }
+
+        }
+
+
+
+
+
+
+      case 3:
+
+
+        if (abs(AvgAccX) < 0.4 || case_activated == true) {
+          case_activated = true;
+
+
+
+          M5.dis.displaybuff(Case_iv);
+
+          if (M5.Btn.wasPressed()) {
+            for (;;) {
+
+
+              Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
+
+              int n_average = 15;
+              // Averaging 15 different acceleration data to determine when the object tilts
+              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+
+              M5.IMU.getAccelData(&accX, &accY, &accZ);
+              M5.IMU.getTempData(&temp);
+
+              CurrentTime = millis();
+
+              if (CurrentTime - PreviousTime >= 12000) {
+                k = 0;
+                for (k = 0; k < 71; k++) {
+                  if ((k % 15) != 0 || k == 0) {
+                    if (TempGraph [k + 6] == 255) {
+                      TempGraph[k + 3] = 0xff;
+                    }
+                    else if (TempGraph [k + 6] == 0) {
+                      TempGraph[k + 3] = 0x00;
+                    }
+                  }
+
+
+                  else {
+                    TempGraph[k] = 0x00;
+
+                  }
+                  TempGraph [75] = 0x00;
+                }
+              }
+
+              if (temp >= 20 && temp < 30) {
+
+                TempGraph [75] = 0xff;
+
+              }
+
+
+              else if (temp >= 30 && temp < 35) {
+
+                TempGraph [60] = 0xff;
+
+              }
+
+
+              else if (temp >= 35 && temp < 40) {
+                TempGraph[45] = 0xff;
+              }
+              else if (temp >= 40 && temp < 45) {
+                TempGraph [30] = 0xff;
+              }
+              else if (temp >= 45 && temp < 50) {
+                TempGraph[15] = 0xff;
+              }
+              PreviousTime = millis();
+
+
+
+
+
+
+
+
+
+              M5.dis.displaybuff(TempGraph);
+
+
+              if (abs(AvgAccZ) > 0.4) //return back to main menu
+              {
+                break;
+              }
+
+            }
+          }
+          if (AvgAccX > 0.4) { //tilting to the right
+            case_code += 1;
+
+            break;
+
+          }
+
+
+
+          else if ( AvgAccX < -0.4) { //tilting to the left
+            case_code -= 1;
+
+            break;
+          }
+        }
+
+
+
+
+
+
+
+      case 4:
+
+        if (abs(AvgAccX) < 0.4 || case_activated == true) {
+          case_activated = true;
+
+
+
+          M5.dis.displaybuff(Case_v);
+
+          if (M5.Btn.wasPressed()) {
+            for (;;) {
+
+              CurrentTime = millis();
+
+              M5.IMU.getAccelData(&accX, &accY, &accZ);
+              M5.IMU.getTempData(&temp);
+
+
+
+
+              int n_average = 15;
+              // Averaging 15 different acceleration data to determine when the object tilts
+              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+
+
+              if (CurrentTime - PreviousTime > 200) {
+
+
+                if(temp=temp){
+                  TempF=(temp*1.8)+32;
+                  matrix.printf(TempF);
+                  matrix.printf("F");
+                  }
+                    else{
+                      matrix.printf(temp "C");
+                    }
+
+                  
+
+        
+ 
+                matrix.fillScreen(0);
+                matrix.setCursor(z, 0);
+                matrix.printf("Unit converter");
+                if (--z < -76) {
+                  z = matrix.width();
+                  if (++y >= 3) {
+                    y = 0;
+       
+                  }
+                  matrix.setTextColor(colors[y]);
+                }
+                matrix.show();
+                PreviousTime = millis();
+              }
+
+              if (abs(AvgAccZ) > 0.4) //return back to main menu
+              {
+                break;
+              }
+
+            }
+          }
+          if (AvgAccX > 0.4) { //tilting to the right
+            case_code = 0;
+
+            break;
+
+          }
+
+
+
+          else if ( AvgAccX < -0.4) { //tilting to the left
+            case_code -= 1;
+
+            break;
+          }
+        }
+
+      default:
+        break;
+
 
     }
+
+  }
+
+
+
+
+  M5.update();
+
+}
