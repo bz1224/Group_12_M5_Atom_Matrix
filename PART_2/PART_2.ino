@@ -237,6 +237,16 @@ void loop()
       case 0:
         for (;;) {
 
+          M5.IMU.getAccelData(&accX, &accY, &accZ);
+
+          int n_average = 15;
+          // Averaging 15 different acceleration data to determine when the object tilts
+          AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+          AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+          AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+
+
+
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
 
@@ -245,6 +255,8 @@ void loop()
             M5.dis.displaybuff(Case_i);
 
             if (M5.Btn.wasPressed()) {
+               M5.dis.drawpix(0, 0xf000000);
+              
               for (;;) {
 
                 CurrentTime = millis();
