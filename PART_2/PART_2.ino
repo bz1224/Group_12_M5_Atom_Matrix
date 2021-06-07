@@ -52,8 +52,7 @@ float AvgAccZ = 0.0F;
 unsigned long CurrentTime;
 unsigned long PreviousTime = 0;
 unsigned long TimeSinceLastTempReading = millis();
-float TempF=0;
-       
+
 
 //define an array for displaying colors on the screen
 const uint16_t colors[] = {
@@ -148,7 +147,7 @@ void setup()
   }
 }
 
-int z = matrix.height() - 1;
+int z = matrix.height();
 int y = 0;
 
 int case_code = 0;
@@ -156,7 +155,7 @@ int case_code = 0;
 void loop()
 {
   i = 0;
-  M5.dis.drawpix(0, 0xf000000);
+  M5.dis.fillpix(0x000000);
   case_activated = false;
 
   M5.IMU.getAccelData(&accX, &accY, &accZ);
@@ -227,11 +226,11 @@ void loop()
     }
     PreviousTime = millis();
   }
-  M5.dis.displaybuff(Case_i);
+
   if (M5.Btn.wasPressed() || ButtonPressedAtLeastOnce == 1 ) {
     ButtonPressedAtLeastOnce = 1;
+   
 
-  
     switch (case_code) {
 
       case 0:
@@ -245,17 +244,21 @@ void loop()
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-
-
+          Serial.print("It does enter");
+          
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
 
-
+            M5.update();
 
             M5.dis.displaybuff(Case_i);
 
+            Serial.print("INNER CONDITIONS");
+      
             if (M5.Btn.wasPressed()) {
-               M5.dis.drawpix(0, 0xf000000);
+              M5.dis.fillpix(0x000000);
+              Serial.print("INNER FORLOOP");
+              PreviousTime = millis();
               
               for (;;) {
 
@@ -294,15 +297,17 @@ void loop()
 
                 }
 
-
+                 
                 if (abs(AvgAccZ) > 0.4) //return back to main menu
                 {
-                  break;
+                  
+                      break;
+                  
                 }
 
               }
             }
-            if (AvgAccX > 0.4) { //tilting to the right
+           if (AvgAccX > 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the right
               case_code += 1;
 
               break;
@@ -311,27 +316,40 @@ void loop()
 
 
 
-            else if ( AvgAccX < -0.4) { //tilting to the left
+            else if ( AvgAccX < 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the left
               case_code = 4;
 
               break;
             }
-
+            
           }
         }
         break;
+        
 
 
       case 1:
         for (;;) {
+          M5.IMU.getAccelData(&accX, &accY, &accZ);
+
+          int n_average = 15;
+          // Averaging 15 different acceleration data to determine when the object tilts
+          AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+          AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+          AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
 
-
+            M5.update();
 
             M5.dis.displaybuff(Case_ii);
 
             if (M5.Btn.wasPressed()) {
+
+              M5.dis.fillpix(0x000000);
+              
+              PreviousTime = millis();
+              
               for (;;) {
                 TempSum = 0;
                 AvgTemp = 0;
@@ -388,22 +406,6 @@ void loop()
                 if (CurrentTime - PreviousTime > 200) { // 0.3g = 27deg tilt angle
 
 
-<<<<<<< HEAD
-
-                matrix.fillScreen(0);
-                matrix.setCursor(z, 0);
-                matrix.printf("AVG TEMP: % .2f C", AvgTemp);
-                if (--z < -106) {
-                  z = matrix.width();
-                  if (++y >= 3) {
-                    y = 0;
-
-                  }
-                  matrix.setTextColor(colors[y]);
-                }
-                matrix.show();
-                PreviousTime = millis();
-=======
 
                   matrix.fillScreen(0);
                   matrix.setCursor(z, 0);
@@ -430,83 +432,57 @@ void loop()
               }
             }
 
-            if (AvgAccX > 0.4) { //tilting to the right
+            if (AvgAccX > 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the right
               case_code += 1;
               break;
 
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
             }
 
 
-<<<<<<< HEAD
-              if (abs(AvgAccZ) > 0.4) //return back to main menu
-              {
-                break;
-              }
-
-=======
-            else if ( AvgAccX < -0.4) { //tilting to the left
+            else if ( AvgAccX < 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the left
               case_code -= 1;
               break;
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
             }
-          }
 
-<<<<<<< HEAD
-          if (AvgAccX > 0.4) { //tilting to the right
-            case_code += 1;
-            break;
-
-
-          }
-=======
           }
 
 
         }
         break;
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
 
-          else if ( AvgAccX < -0.4) { //tilting to the left
-            case_code -= 1;
-            break;
-          }
 
-<<<<<<< HEAD
-        }
-=======
       case 2:
         for (;;) {
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
+ M5.IMU.getAccelData(&accX, &accY, &accZ);
 
+          int n_average = 15;
+          // Averaging 15 different acceleration data to determine when the object tilts
+          AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+          AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+          AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
 
-
+            M5.update();
 
             M5.dis.displaybuff(Case_iii);
 
-<<<<<<< HEAD
-
-      case 2:
-
-
-        if (abs(AvgAccX) < 0.4 || case_activated == true) {
-          case_activated = true;
-
-=======
             if (M5.Btn.wasPressed()) {
-              for (;;) {
 
+              M5.dis.fillpix(0x000000);
+              
+              PreviousTime = millis();
+              
+              for (;;) {
+          
                 CurrentTime = millis();
 
 
 
                 M5.IMU.getAccelData(&accX, &accY, &accZ);
                 M5.IMU.getTempData(&temp);
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
                 int n_average = 15;
                 // Averaging 15 different acceleration data to determine when the object tilts
@@ -514,67 +490,6 @@ void loop()
                 AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
                 AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-<<<<<<< HEAD
-          M5.dis.displaybuff(Case_iii);
-
-          if (M5.Btn.wasPressed()) {
-            for (;;) {
-
-              CurrentTime = millis();
-
-
-
-              M5.IMU.getAccelData(&accX, &accY, &accZ);
-              M5.IMU.getTempData(&temp);
-
-              int n_average = 15;
-              // Averaging 15 different acceleration data to determine when the object tilts
-              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
-
-
-
-              Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
-
-
-
-              if (CurrentTime - PreviousTime > 200) {
-
-
-                M5.dis.drawpix(0, 4, 0x0000ff); // blue
-                M5.dis.drawpix(0, 3, 0xce87fa); // skyblue
-                M5.dis.drawpix(0, 2, 0xff0000); // green
-                M5.dis.drawpix(0, 1, 0xffff00); // yellow
-                M5.dis.drawpix(0, 0, 0x00ff00); // red
-
-                if (temp < 25) {
-
-                  for (int i = 2; i < 5; i++) {
-                    for (int j = 1; j < 4; j++) {
-
-                      M5.dis.drawpix(i, j, 0x0000ff);
-                    }
-                  }
-                }
-
-                else if (temp >= 25 && temp < 30) {
-
-                  for (int i = 2; i < 5; i++) {
-                    for (int j = 1; j < 4; j++) {
-
-                      M5.dis.drawpix(i, j, 0xce87fa);
-                    }
-                  }
-                }
-
-                else if (temp >= 30 && temp < 35) {
-
-                  for (int i = 2; i < 5; i++) {
-                    for (int j = 1; j < 4; j++) {
-
-                      M5.dis.drawpix(i, j, 0xff0000);
-=======
 
 
                 Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
@@ -627,21 +542,9 @@ void loop()
 
                         M5.dis.drawpix(i, j, 0xffff00);
                       }
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
                     }
                   }
-                }
 
-<<<<<<< HEAD
-                else if (temp >= 35 && temp < 40) {
-
-                  for (int i = 2; i < 5; i++) {
-                    for (int j = 1; j < 4; j++) {
-
-                      M5.dis.drawpix(i, j, 0xffff00);
-                    }
-                  }
-=======
                   else {
 
                     for (int i = 2; i < 5; i++) {
@@ -652,25 +555,11 @@ void loop()
                     }
                   }
                   PreviousTime = millis();
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
                 }
 
-                else {
 
-<<<<<<< HEAD
-                  for (int i = 2; i < 5; i++) {
-                    for (int j = 1; j < 4; j++) {
 
-                      M5.dis.drawpix(i, j, 0x00ff00);
-                    }
-                  }
-                }
-                PreviousTime = millis();
-              }
-=======
 
-                M5.dis.drawpix(0, 0x000000);
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
 
                 if (abs(AvgAccZ) > 0.4) //return back to main menu
@@ -678,33 +567,18 @@ void loop()
                   break;
                 }
 
-<<<<<<< HEAD
-              M5.dis.drawpix(0, 0x000000);
-=======
               }
             }
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
-            if (AvgAccX > 0.4) { //tilting to the right
+            if (AvgAccX > 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the right
               case_code += 1;
               break;
 
-<<<<<<< HEAD
-              if (abs(AvgAccZ) > 0.4) //return back to main menu
-              {
-                break;
-              }
-=======
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
             }
-          }
 
-          if (AvgAccX > 0.4) { //tilting to the right
-            case_code += 1;
-            break;
 
-            else if ( AvgAccX < -0.4) { //tilting to the left
+            else if ( AvgAccX < 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the left
               case_code -= 1;
               break;
             }
@@ -714,66 +588,31 @@ void loop()
         }
         break;
 
-          else if ( AvgAccX < -0.4) { //tilting to the left
-            case_code -= 1;
-            break;
-          }
 
-<<<<<<< HEAD
-        }
-=======
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
 
       case 3:
         for (;;) {
+ M5.IMU.getAccelData(&accX, &accY, &accZ);
 
+          int n_average = 15;
+          // Averaging 15 different acceleration data to determine when the object tilts
+          AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+          AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+          AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
 
+            M5.update();
 
-
-<<<<<<< HEAD
-      case 3:
-
-
-        if (abs(AvgAccX) < 0.4 || case_activated == true) {
-          case_activated = true;
-
-
-
-          M5.dis.displaybuff(Case_iv);
-
-          if (M5.Btn.wasPressed()) {
-            for (;;) {
-
-
-              Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
-
-              int n_average = 15;
-              // Averaging 15 different acceleration data to determine when the object tilts
-              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
-
-              M5.IMU.getAccelData(&accX, &accY, &accZ);
-              M5.IMU.getTempData(&temp);
-
-              CurrentTime = millis();
-
-              if (CurrentTime - PreviousTime >= 12000) {
-                k = 0;
-                for (k = 0; k < 71; k++) {
-                  if ((k % 15) != 0 || k == 0) {
-                    if (TempGraph [k + 6] == 255) {
-                      TempGraph[k + 3] = 0xff;
-                    }
-                    else if (TempGraph [k + 6] == 0) {
-                      TempGraph[k + 3] = 0x00;
-=======
             M5.dis.displaybuff(Case_iv);
-
+            
             if (M5.Btn.wasPressed()) {
+
+              M5.dis.fillpix(0x000000);
+              
+              PreviousTime = millis();
+              
               for (;;) {
 
 
@@ -800,39 +639,23 @@ void loop()
                       else if (TempGraph [k + 6] == 0) {
                         TempGraph[k + 3] = 0x00;
                       }
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
                     }
 
 
-<<<<<<< HEAD
-                  else {
-                    TempGraph[k] = 0x00;
-=======
-                    else {
-                      TempGraph[k] = 0x00;
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
-
-                    }
-                    TempGraph [75] = 0x00;
+                    
+                    
                   }
-<<<<<<< HEAD
-                  TempGraph [75] = 0x00;
-                }
-              }
 
-              if (temp >= 20 && temp < 30) {
-
-                TempGraph [75] = 0xff;
-
-              }
-
-
-              else if (temp >= 30 && temp < 35) {
-
-                TempGraph [60] = 0xff;
-=======
+                  TempGraph[15] = 0;
+                  TempGraph[30] = 0;
+                  TempGraph[45] = 0;
+                  TempGraph[60] = 0;
+                  TempGraph[75] = 0;
+                  
                 }
 
+                
+                
                 if (temp >= 20 && temp < 30) {
 
                   TempGraph [75] = 0xff;
@@ -845,9 +668,7 @@ void loop()
                   TempGraph [60] = 0xff;
 
                 }
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
-              }
 
                 else if (temp >= 35 && temp < 40) {
                   TempGraph[45] = 0xff;
@@ -860,62 +681,25 @@ void loop()
                 }
                 PreviousTime = millis();
 
-              else if (temp >= 35 && temp < 40) {
-                TempGraph[45] = 0xff;
-              }
-              else if (temp >= 40 && temp < 45) {
-                TempGraph [30] = 0xff;
-              }
-              else if (temp >= 45 && temp < 50) {
-                TempGraph[15] = 0xff;
-              }
-              PreviousTime = millis();
 
 
 
-
+                M5.update();
 
 
 
 
                 M5.dis.displaybuff(TempGraph);
 
-              M5.dis.displaybuff(TempGraph);
 
-<<<<<<< HEAD
-
-              if (abs(AvgAccZ) > 0.4) //return back to main menu
-              {
-                break;
-=======
                 if (abs(AvgAccZ) > 0.4) //return back to main menu
                 {
                   break;
-                }
+                } 
 
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
               }
-
             }
-<<<<<<< HEAD
-          }
-          if (AvgAccX > 0.4) { //tilting to the right
-            case_code += 1;
-
-            break;
-
-          }
-
-
-
-          else if ( AvgAccX < -0.4) { //tilting to the left
-            case_code -= 1;
-
-            break;
-          }
-        }
-=======
-            if (AvgAccX > 0.4) { //tilting to the right
+            if (AvgAccX > 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the right
               case_code += 1;
 
               break;
@@ -924,7 +708,7 @@ void loop()
 
 
 
-            else if ( AvgAccX < -0.4) { //tilting to the left
+            else if ( AvgAccX < 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the left
               case_code -= 1;
 
               break;
@@ -932,52 +716,42 @@ void loop()
           }
         }
         break;
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
 
 
 
 
 
-<<<<<<< HEAD
-
-      case 4:
-
-        if (abs(AvgAccX) < 0.4 || case_activated == true) {
-          case_activated = true;
-=======
       case 4:
         for (;;) {
+           M5.IMU.getAccelData(&accX, &accY, &accZ);
+
+          int n_average = 15;
+          // Averaging 15 different acceleration data to determine when the object tilts
+          AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+          AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+          AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
 
-
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
+            M5.update();
 
             M5.dis.displaybuff(Case_v);
 
             if (M5.Btn.wasPressed()) {
+
+              M5.dis.fillpix(0x000000);
+              
+              PreviousTime = millis();
+              
               for (;;) {
-
-<<<<<<< HEAD
-          M5.dis.displaybuff(Case_v);
-
-          if (M5.Btn.wasPressed()) {
-            for (;;) {
-=======
+                
                 CurrentTime = millis();
 
                 M5.IMU.getAccelData(&accX, &accY, &accZ);
                 M5.IMU.getTempData(&temp);
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
-              CurrentTime = millis();
 
-<<<<<<< HEAD
-              M5.IMU.getAccelData(&accX, &accY, &accZ);
-              M5.IMU.getTempData(&temp);
-=======
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 
 
                 int n_average = 15;
@@ -987,50 +761,6 @@ void loop()
                 AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
 
-<<<<<<< HEAD
-              int n_average = 15;
-              // Averaging 15 different acceleration data to determine when the object tilts
-              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
-
-
-              if (CurrentTime - PreviousTime > 200) {
-
-
-                if(temp=temp){
-                  TempF=(temp*1.8)+32;
-                  matrix.printf(TempF);
-                  matrix.printf("F");
-                  }
-                    else{
-                      matrix.printf(temp "C");
-                    }
-
-                  
-
-        
- 
-                matrix.fillScreen(0);
-                matrix.setCursor(z, 0);
-                matrix.printf("Unit converter");
-                if (--z < -76) {
-                  z = matrix.width();
-                  if (++y >= 3) {
-                    y = 0;
-       
-                  }
-                  matrix.setTextColor(colors[y]);
-                }
-                matrix.show();
-                PreviousTime = millis();
-              }
-
-              if (abs(AvgAccZ) > 0.4) //return back to main menu
-              {
-                break;
-              }
-=======
                 if (CurrentTime - PreviousTime > 200) {
 
 
@@ -1057,27 +787,16 @@ void loop()
 
               }
             }
-            if (AvgAccX > 0.4) { //tilting to the right
+            if (AvgAccX > 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the right
               case_code = 0;
 
               break;
 
             }
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
-
-            }
-          }
-          if (AvgAccX > 0.4) { //tilting to the right
-            case_code = 0;
-
-            break;
-
-<<<<<<< HEAD
-          }
 
 
-=======
-            else if ( AvgAccX < -0.4) { //tilting to the left
+
+            if ( AvgAccX < 0 && abs(AvgAccX)>0.9 &&abs(AvgAccY)< 0.1 && abs(AvgAccZ)<0.1) { //tilting to the left
               case_code -= 1;
 
               break;
@@ -1087,28 +806,10 @@ void loop()
         break;
       default:
         break;
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
-
-          else if ( AvgAccX < -0.4) { //tilting to the left
-            case_code -= 1;
-
-<<<<<<< HEAD
-            break;
-          }
-        }
-=======
-    }
-
-  }
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
-
-      default:
-        break;
 
 
     }
 
-<<<<<<< HEAD
   }
 
 
@@ -1116,8 +817,4 @@ void loop()
 
   M5.update();
 
-=======
-  M5.update();
-
->>>>>>> e91882c5ef2d61fb506117f0aa849786ea774580
 }
