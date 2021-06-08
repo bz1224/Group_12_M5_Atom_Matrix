@@ -127,6 +127,202 @@ unsigned char Case_v[77] =
   /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
 };
 
+unsigned char Char_T[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_equals[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_1[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+
+unsigned char Char_2[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+};
+
+
+unsigned char Char_3[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_4[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_5[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+};
+
+
+unsigned char Char_6[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_7[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_8[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+
+unsigned char Char_9[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_0[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_A[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+};
+
+unsigned char Char_V[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   002 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_G[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+};
+
+
+
+unsigned char Char_F[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+};
+
+unsigned char Char_C[77] =
+{
+  /* width  005 */ 0x05,
+  /* height 005 */ 0x05,
+  /* Line   000 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+  /* Line   001 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   002 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   003 */ 0x00, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //
+  /* Line   004 */ 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, //
+};
+
+
+
+
 
 
 void setup()
@@ -190,7 +386,7 @@ void loop()
 
 
   CurrentTime = millis();
-  
+
   M5.update();
 
   if (M5.Btn.wasPressed() || ButtonPressedAtLeastOnce == 1 ) {
@@ -210,7 +406,6 @@ void loop()
           AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
           AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-          Serial.print("It does enter");
 
           if (abs(AvgAccX) < 0.4 || case_activated == true) {
             case_activated = true;
@@ -219,11 +414,11 @@ void loop()
 
             M5.dis.displaybuff(Case_i);
 
-            Serial.print("INNER CONDITIONS");
+
 
             if (M5.Btn.wasPressed()) {
               M5.dis.fillpix(0x000000);
-              Serial.print("INNER FORLOOP");
+
               PreviousTime = millis();
 
               for (;;) {
@@ -248,36 +443,141 @@ void loop()
 
 
 
+                if (CurrentTime - PreviousTime > 350 && CurrentTime - PreviousTime < 400) {
+                  M5.dis.fillpix(0x000000);
+                }
 
-                if (CurrentTime - PreviousTime > 200) {
-                  PreviousTime = millis();
-                  matrix.fillScreen(0);
-                  matrix.setCursor(z, 0);
-                  if (TempInC == true) {
-                    matrix.printf("TEMPERATURE : %.2f C", temp);
-                  }
-                  else if (TempInC == false) {
-                    matrix.printf("TEMPERATURE : %.2f F", TempInF);
-                  }
-                  if (--z < -106) {
-                    z = matrix.width();
-                    if (++y >= 3) {
-                      y = 0;
-                    }
-                    matrix.setTextColor(colors[y]);
-                  }
-                  matrix.show();
-                  
+                if (CurrentTime - PreviousTime > 400 && CurrentTime - PreviousTime < 750) {
+
+                  M5.dis.displaybuff(Char_T);
+                }
+                if (CurrentTime - PreviousTime > 750 && CurrentTime - PreviousTime < 800) {
+                  M5.dis.fillpix(0x000000);
+                }
+
+                if (CurrentTime - PreviousTime > 800 && CurrentTime - PreviousTime < 950) {
+
+                  M5.dis.displaybuff(Char_equals);
 
                 }
-                
+
+
+
+                if (CurrentTime - PreviousTime > 950 && CurrentTime - PreviousTime < 1000) {
+                  M5.dis.fillpix(0x000000);
+                }
+                if (CurrentTime - PreviousTime > 1000) {
+                  if (TempInC == true) {
+                    j = temp;
+                  }
+                  else if (TempInC == false) {
+
+                    j = TempInF;
+                  }
+                  k = 0;
+                  int c = 0;
+                  while (j != 0)
+                  {
+                    ++k;
+                    j /= 10;
+                  }
+                  int jj = k;
+                  int dig[k];
+                  while (i != 0)
+                  {
+                    dig[--k] = i % 10;
+                    i /= 10;
+                    j = 0;
+                  }
+                  while (j < k) {
+                    CurrentTime = millis();
+                    if (dig[j] == 0) {
+                      M5.dis.displaybuff(Char_0);
+                    }
+                    else if (dig[j] == 1) {
+                      M5.dis.displaybuff(Char_1);
+                    }
+                    else if (dig[j] == 2) {
+                      M5.dis.displaybuff(Char_2);
+                    }
+                    else if (dig[j] == 3) {
+                      M5.dis.displaybuff(Char_3);
+                    }
+                    else if (dig[j] == 4) {
+                      M5.dis.displaybuff(Char_4);
+                    }
+                    else if (dig[j] == 5) {
+                      M5.dis.displaybuff(Char_5);
+                    }
+                    else if (dig[j] == 6) {
+                      M5.dis.displaybuff(Char_6);
+                    }
+                    else if (dig[j] == 7) {
+                      M5.dis.displaybuff(Char_7);
+                    }
+                    else if (dig[j] == 8) {
+                      M5.dis.displaybuff(Char_8);
+                    }
+                    else if (dig[j] == 9) {
+                      M5.dis.displaybuff(Char_9);
+                    }
+
+                    if (CurrentTime - PreviousTime > 1400 && CurrentTime - PreviousTime < 1750) {
+                      j = 1;
+                      if (j == k) {
+                        PreviousTime = millis();
+                        if (TempInC == true) {
+                          M5.dis.displaybuff(Char_C);
+                        }
+                        if (TempInC == false) {
+                          M5.dis.displaybuff(Char_F);
+                        }
+
+                      }
+                    }
+                    if (CurrentTime - PreviousTime > 1750 && CurrentTime - PreviousTime < 1800) {
+                      M5.dis.fillpix(0x000000);
+                    }
+                    if (CurrentTime - PreviousTime > 1800 && CurrentTime - PreviousTime < 2200) {
+                      j = 2;
+                      if (j == k) {
+                        PreviousTime = millis();
+                        if (TempInC == true) {
+                          M5.dis.displaybuff(Char_C);
+                        }
+                        if (TempInC == false) {
+                          M5.dis.displaybuff(Char_F);
+                        }
+                      }
+                    }
+                    if (CurrentTime - PreviousTime > 2200 && CurrentTime - PreviousTime < 2250) {
+                      M5.dis.fillpix(0x000000);
+                    }
+                    if (CurrentTime - PreviousTime > 2250) {
+                      j = 3;
+                      if (j == k) {
+                        PreviousTime = millis();
+                        if (TempInC == true) {
+                          M5.dis.displaybuff(Char_C);
+                        }
+                        if (TempInC == false) {
+                          M5.dis.displaybuff(Char_F);
+                        }
+                      }
+
+                    }
+
+
+                  }
+                }
+
 
 
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
-                   matrix.Color(0,0,0);
-                  
+
+
                   break;
 
                 }
@@ -286,7 +586,7 @@ void loop()
 
             }
             if (ButtonPressedAtLeastOnce == 0) {
-              
+
               break;
             }
 
@@ -387,37 +687,157 @@ void loop()
                 AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
                 AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-                if (CurrentTime - PreviousTime > 200) { // 0.3g = 27deg tilt angle
 
+                if (CurrentTime - PreviousTime > 350 && CurrentTime - PreviousTime < 400) {
+                  M5.dis.fillpix(0x000000);
+                }
+                if (CurrentTime - PreviousTime > 400 && CurrentTime - PreviousTime < 750) {
 
+                  M5.dis.displaybuff(Char_A);
+                }
+                if (CurrentTime - PreviousTime > 750 && CurrentTime - PreviousTime < 800) {
+                  M5.dis.fillpix(0x000000);
+                }
 
-                  matrix.fillScreen(0);
-                  matrix.setCursor(z, 0);
-                  if (TempInC == true) {
-                    matrix.printf("AVG TEMP: % .2f C", AvgTemp);
-                  }
-                  else if (TempInC == false) {
-                    matrix.printf("AVG TEMP: % .2f F", AvgTempInF);
-                  }
+                if (CurrentTime - PreviousTime > 800 && CurrentTime - PreviousTime < 950) {
 
-                  if (--z < -106) {
-                    z = matrix.width();
-                    if (++y >= 3) {
-                      y = 0;
-
-                    }
-                    matrix.setTextColor(colors[y]);
-                  }
-                  matrix.Color(0,0,0);
-                  PreviousTime = millis();
+                  M5.dis.displaybuff(Char_V);
 
                 }
+
+
+
+                if (CurrentTime - PreviousTime > 950 && CurrentTime - PreviousTime < 1000) {
+                  M5.dis.fillpix(0x000000);
+                }
+                if (CurrentTime - PreviousTime > 1000 && CurrentTime - PreviousTime < 1400) {
+                  M5.dis.displaybuff(Char_G);
+
+                }
+                if (CurrentTime - PreviousTime > 1400 && CurrentTime - PreviousTime < 1450) {
+                  M5.dis.fillpix(0x000000);
+                }
+                if (CurrentTime - PreviousTime > 1450 && CurrentTime - PreviousTime < 1750) {
+                  M5.dis.displaybuff(Char_T);
+                }
+                if (CurrentTime - PreviousTime > 1750 && CurrentTime - PreviousTime < 1800) {
+                  M5.dis.fillpix(0x000000);
+                }
+                if (CurrentTime - PreviousTime > 1800 && CurrentTime - PreviousTime < 1850) {
+                  M5.dis.displaybuff(Char_equals);
+                }
+
+                if (CurrentTime - PreviousTime > 1850) {
+                  if (TempInC == true) {
+                    j = AvgTemp;
+                  }
+                  else if (TempInC == false) {
+
+                    j = TempInF;
+                  }
+                  k = 0;
+                  int c = 0;
+                  while (j != 0)
+                  {
+                    ++k;
+                    j /= 10;
+                  }
+                  int jj = k;
+                  int dig[k];
+                  while (i != 0)
+                  {
+                    dig[--k] = i % 10;
+                    i /= 10;
+                    j = 0;
+                  }
+                  while (j < k) {
+                    CurrentTime = millis();
+                    if (dig[j] == 0) {
+                      M5.dis.displaybuff(Char_0);
+                    }
+                    else if (dig[j] == 1) {
+                      M5.dis.displaybuff(Char_1);
+                    }
+                    else if (dig[j] == 2) {
+                      M5.dis.displaybuff(Char_2);
+                    }
+                    else if (dig[j] == 3) {
+                      M5.dis.displaybuff(Char_3);
+                    }
+                    else if (dig[j] == 4) {
+                      M5.dis.displaybuff(Char_4);
+                    }
+                    else if (dig[j] == 5) {
+                      M5.dis.displaybuff(Char_5);
+                    }
+                    else if (dig[j] == 6) {
+                      M5.dis.displaybuff(Char_6);
+                    }
+                    else if (dig[j] == 7) {
+                      M5.dis.displaybuff(Char_7);
+                    }
+                    else if (dig[j] == 8) {
+                      M5.dis.displaybuff(Char_8);
+                    }
+                    else if (dig[j] == 9) {
+                      M5.dis.displaybuff(Char_9);
+                    }
+
+                    if (CurrentTime - PreviousTime > 2250 && CurrentTime - PreviousTime < 2500) {
+                      j = 1;
+                      if (j == k) {
+                        PreviousTime = millis();
+                        if (TempInC == true) {
+                          M5.dis.displaybuff(Char_C);
+                        }
+                        if (TempInC == false) {
+                          M5.dis.displaybuff(Char_F);
+                        }
+                      }
+                    }
+                    if (CurrentTime - PreviousTime > 2500 && CurrentTime - PreviousTime < 2650) {
+                      M5.dis.fillpix(0x000000);
+                    }
+                    if (CurrentTime - PreviousTime > 2650 && CurrentTime - PreviousTime < 2900) {
+                      j = 2;
+                      if (j == k) {
+                        PreviousTime = millis();
+                        if (TempInC == true) {
+                          M5.dis.displaybuff(Char_C);
+                        }
+                        if (TempInC == false) {
+                          M5.dis.displaybuff(Char_F);
+                        }
+                      }
+                    }
+                    if (CurrentTime - PreviousTime > 2900 && CurrentTime - PreviousTime < 3250) {
+                      M5.dis.fillpix(0x000000);
+                    }
+                    if (CurrentTime - PreviousTime > 3250) {
+                      j = 3;
+                      if (j == k) {
+                        PreviousTime = millis();
+                        if (TempInC == true) {
+                          M5.dis.displaybuff(Char_C);
+                        }
+                        if (TempInC == false) {
+                          M5.dis.displaybuff(Char_F);
+                        }
+                      }
+
+                    }
+
+
+                  }
+                }
+
+
 
 
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
-                 matrix.fillScreen(0);
+
                   break;
 
                 }
@@ -561,7 +981,7 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
-                  
+
                   break;
 
                 }
@@ -926,86 +1346,85 @@ void loop()
                 AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
                 AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
+                M5.update();
+                if (CurrentTime - PreviousTime > 500) {
+                  M5.dis.displaybuff(Char_C);
 
-                if (CurrentTime - PreviousTime > 200) {
-
-
-
-
-                  matrix.fillScreen(0);
-                  matrix.setCursor(z, 0);
-                  if ( TempInC == true) {
-                    matrix.printf("PRESS THE BUTTON FOR TEMP IN F");
-                  }
-                  else if (TempInC == false) {
-                    matrix.printf("PRESS THE BUTTON FOR TEMP IN C");
-                  }
-
-                  if (--z < -196) {
-                    z = matrix.width();
-                    if (++y >= 3) {
-                      y = 0;
-                    }
-                    matrix.setTextColor(colors[y]);
-                  }
-                  matrix.show();
-                  PreviousTime = millis();
-                }
-
-                if (M5.Btn.wasPressed()) {
-
-                  if (TempInC == true) {
-                    TempInC = false;
-                  }
-                  if (TempInC == false) {
+                  if (M5.Btn.wasPressed()) {
                     TempInC = true;
+                    M5.dis.fillpix(0x000000);
+                    M5.dis.displaybuff(Char_C);
                   }
                 }
+                M5.update();
+                if (CurrentTime - PreviousTime > 500 && CurrentTime - PreviousTime < 1000) {
+                  M5.dis.displaybuff(Char_F);
+
+                  if (M5.Btn.wasPressed()) {
+                    TempInC = false;
+                    M5.dis.fillpix(0x000000);
+                    M5.dis.displaybuff(Char_F);
+                  }
+                  if (CurrentTime - PreviousTime > 1000) {
+                    PreviousTime = millis();
+                  }
 
 
 
-                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
-                {
-                  ButtonPressedAtLeastOnce = 0;
-                  matrix.Color(0,0,0);
-                  break;
 
                 }
+
+
+
+
+
+
+               
+
+
+
+              if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
+              {
+                ButtonPressedAtLeastOnce = 0;
+                matrix.Color(0, 0, 0);
+                break;
 
               }
 
             }
-            if (ButtonPressedAtLeastOnce == 0) {
-              break;
-            }
-            if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
-              case_code = 0;
 
-              break;
+          }
+          if (ButtonPressedAtLeastOnce == 0) {
+            break;
+          }
+          if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
+            case_code = 0;
 
-            }
+            break;
+
+          }
 
 
 
-            if ( AvgAccX < 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the left
-              case_code -= 1;
+          if ( AvgAccX < 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the left
+            case_code -= 1;
 
-              break;
-            }
+            break;
           }
         }
-        break;
-      default:
-        break;
-
-
     }
+    break;
+  default:
+    break;
+
 
   }
 
+}
 
 
 
-  M5.update();
+
+M5.update();
 
 }
