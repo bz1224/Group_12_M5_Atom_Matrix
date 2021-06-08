@@ -190,42 +190,7 @@ void loop()
 
 
   CurrentTime = millis();
-  if (CurrentTime - PreviousTime >= 12000) {
-    k = 0;
-    for (k = 0; k < 71; k++) {
-      if (k % 15 != 0) {
-        TempGraph[k + 3] = TempGraph[k + 6];
-      }
-      else {
-        TempGraph[k] = 0x00;
-        TempGraph [75] = 0x00;
-      }
-    }
-
-    if (temp >= 20 && temp < 30) {
-
-      TempGraph [75] = 0xff;
-
-    }
-
-
-    else if (temp >= 30 && temp < 35) {
-
-      TempGraph [60] = 0xff;
-
-    }
-
-    else if (temp >= 35 && temp < 40) {
-      TempGraph[45] = 0xff;
-    }
-    else if (temp >= 40 && temp < 45) {
-      TempGraph [30] = 0xff;
-    }
-    else if (temp >= 45 && temp < 50) {
-      TempGraph[15] = 0xff;
-    }
-    PreviousTime = millis();
-  }
+  
   M5.update();
 
   if (M5.Btn.wasPressed() || ButtonPressedAtLeastOnce == 1 ) {
@@ -302,13 +267,16 @@ void loop()
                     matrix.setTextColor(colors[y]);
                   }
                   matrix.show();
+                  
 
                 }
+                
 
 
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
+                  matrix.clear();
                   break;
 
                 }
@@ -317,6 +285,7 @@ void loop()
 
             }
             if (ButtonPressedAtLeastOnce == 0) {
+              
               break;
             }
 
@@ -447,6 +416,7 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
+                  matrix.clear();
                   break;
 
                 }
@@ -590,6 +560,7 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
+                  
                   break;
 
                 }
@@ -995,6 +966,7 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
+                  matrix.clear();
                   break;
 
                 }
