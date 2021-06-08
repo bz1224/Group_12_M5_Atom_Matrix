@@ -1,37 +1,13 @@
-
-#include <Adafruit_GFX.h>
-
-
-#include <gfxfont.h>
-
-#include <Adafruit_NeoMatrix.h>
-
-
-#include <Adafruit_NeoPixel.h>
-
-
-
 #include <M5Atom.h>
 #include <FastLED.h>
 #include <TimeLib.h>
 
-#ifndef PSTR
-#define PSTR // Make Arduino Due happy
-#endif
 
-#define PiN 27
 #define OneHour 3600000
-//Declare matrix needed to display information
-//First two parameters give width and height of the matrix
-//Fourth parameter gives the matrix layout
 
 
 
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
 
-                            NEO_MATRIX_TOP    + NEO_MATRIX_LEFT +
-                            NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
-                            NEO_GRB          + NEO_KHZ800  );
 
 
 
@@ -41,7 +17,7 @@ float AvgTemp = 0;
 float TempSum = 0;
 float TempOverLast24Hours [24] = {0};
 int i = 0, cnt = 0, j = 0, k = 0;
-
+int infinite_break;
 int ButtonPressedAtLeastOnce = 0;
 bool case_activated = false, TempInC = true;
 
@@ -54,10 +30,6 @@ unsigned long PreviousTime = 0;
 unsigned long TimeSinceLastTempReading = millis();
 
 
-//define an array for displaying colors on the screen
-const uint16_t colors[] = {
-  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255)
-};
 
 
 
@@ -331,11 +303,7 @@ void setup()
 
   M5.IMU.Init();
 
-  //initializing the matrix for displaying info
-  matrix.begin();
-  matrix.setTextWrap(false);
-  matrix.setBrightness(20);
-  matrix.setTextColor(colors[0]);
+  
   M5.IMU.getTempData(&temp);
   i = 0;
   for (i = 0; i < 24; i++) {
@@ -343,8 +311,7 @@ void setup()
   }
 }
 
-int z = matrix.height();
-int y = 0;
+
 
 int case_code = 0;
 
@@ -468,12 +435,13 @@ void loop()
                 }
                 if (CurrentTime - PreviousTime > 1000) {
                   if (TempInC == true) {
-                    j = temp;
+                    i = temp;
                   }
                   else if (TempInC == false) {
 
-                    j = TempInF;
+                    i = TempInF;
                   }
+                  j = i;
                   k = 0;
                   int c = 0;
                   while (j != 0)
@@ -489,7 +457,7 @@ void loop()
                     i /= 10;
                     j = 0;
                   }
-                  while (j < k) {
+                  while (j < jj) {
                     CurrentTime = millis();
                     if (dig[j] == 0) {
                       M5.dis.displaybuff(Char_0);
@@ -524,12 +492,12 @@ void loop()
 
                     if (CurrentTime - PreviousTime > 1400 && CurrentTime - PreviousTime < 1750) {
                       j = 1;
-                      if (j == k) {
+                      if (j == jj) {
                         PreviousTime = millis();
                         if (TempInC == true) {
                           M5.dis.displaybuff(Char_C);
                         }
-                        if (TempInC == false) {
+                        else if (TempInC == false) {
                           M5.dis.displaybuff(Char_F);
                         }
 
@@ -540,12 +508,12 @@ void loop()
                     }
                     if (CurrentTime - PreviousTime > 1800 && CurrentTime - PreviousTime < 2200) {
                       j = 2;
-                      if (j == k) {
+                      if (j == jj) {
                         PreviousTime = millis();
                         if (TempInC == true) {
                           M5.dis.displaybuff(Char_C);
                         }
-                        if (TempInC == false) {
+                        else if (TempInC == false) {
                           M5.dis.displaybuff(Char_F);
                         }
                       }
@@ -555,12 +523,12 @@ void loop()
                     }
                     if (CurrentTime - PreviousTime > 2250) {
                       j = 3;
-                      if (j == k) {
+                      if (j == jj) {
                         PreviousTime = millis();
                         if (TempInC == true) {
                           M5.dis.displaybuff(Char_C);
                         }
-                        if (TempInC == false) {
+                        else if (TempInC == false) {
                           M5.dis.displaybuff(Char_F);
                         }
                       }
@@ -1307,6 +1275,8 @@ void loop()
 
 
       case 4:
+        infinite_break = 0;
+
         for (;;) {
           M5.IMU.getAccelData(&accX, &accY, &accZ);
 
@@ -1346,32 +1316,18 @@ void loop()
                 AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
                 AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-                M5.update();
-                if (CurrentTime - PreviousTime > 500) {
-                  M5.dis.displaybuff(Char_C);
 
-                  if (M5.Btn.wasPressed()) {
-                    TempInC = true;
-                    M5.dis.fillpix(0x000000);
-                    M5.dis.displaybuff(Char_C);
-                  }
-                }
-                M5.update();
-                if (CurrentTime - PreviousTime > 500 && CurrentTime - PreviousTime < 1000) {
+                if (TempInC == true && infinite_break == 0) {
+
                   M5.dis.displaybuff(Char_F);
+                  infinite_break = 1;
+                  TempInC = false;
+                }
+                else if (TempInC == false && infinite_break == 0) {
 
-                  if (M5.Btn.wasPressed()) {
-                    TempInC = false;
-                    M5.dis.fillpix(0x000000);
-                    M5.dis.displaybuff(Char_F);
-                  }
-                  if (CurrentTime - PreviousTime > 1000) {
-                    PreviousTime = millis();
-                  }
-
-
-
-
+                  M5.dis.displaybuff(Char_C);
+                  infinite_break = 1;
+                  TempInC = true;
                 }
 
 
@@ -1379,52 +1335,58 @@ void loop()
 
 
 
-               
 
 
 
-              if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
-              {
-                ButtonPressedAtLeastOnce = 0;
-                matrix.Color(0, 0, 0);
-                break;
+
+
+
+
+
+
+
+                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
+                {
+                  ButtonPressedAtLeastOnce = 0;
+
+                  break;
+
+                }
 
               }
 
             }
+            if (ButtonPressedAtLeastOnce == 0) {
+              break;
+            }
+            if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
+              case_code = 0;
 
-          }
-          if (ButtonPressedAtLeastOnce == 0) {
-            break;
-          }
-          if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
-            case_code = 0;
+              break;
 
-            break;
-
-          }
+            }
 
 
 
-          if ( AvgAccX < 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the left
-            case_code -= 1;
+            if ( AvgAccX < 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the left
+              case_code -= 1;
 
-            break;
+              break;
+            }
           }
         }
-    }
-    break;
-  default:
-    break;
+        break;
+      default:
+        break;
 
+
+    }
 
   }
 
-}
 
 
 
-
-M5.update();
+  M5.update();
 
 }
