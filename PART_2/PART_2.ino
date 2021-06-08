@@ -36,14 +36,14 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PiN,
 
 
 float accX = 0, accY = 0, accZ = 0;
-float temp = 0, TempCalc = 0,OldTemp1=40, OldTemp2=40,OldTemp3=40,OldTemp4=40;
+float temp = 0, TempCalc = 0, OldTemp1 = 40, OldTemp2 = 40, OldTemp3 = 40, OldTemp4 = 40, TempInF = 0, AvgTempInF = 0 ;
 float AvgTemp = 0;
 float TempSum = 0;
 float TempOverLast24Hours [24] = {0};
 int i = 0, cnt = 0, j = 0, k = 0;
 
 int ButtonPressedAtLeastOnce = 0;
-bool case_activated = false;
+bool case_activated = false, TempInC = true;
 
 
 float AvgAccX = 0.0F;
@@ -268,6 +268,8 @@ void loop()
                 M5.IMU.getAccelData(&accX, &accY, &accZ);
                 M5.IMU.getTempData(&temp);
 
+                TempInF = (temp * 1.8) + 32;
+
 
                 Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
 
@@ -285,7 +287,12 @@ void loop()
                   PreviousTime = millis();
                   matrix.fillScreen(0);
                   matrix.setCursor(z, 0);
-                  matrix.printf("TEMPERATURE : %.2f ", temp);
+                  if (TempInC == true) {
+                    matrix.printf("TEMPERATURE : %.2f C", temp);
+                  }
+                  else if (TempInC == false) {
+                    matrix.printf("TEMPERATURE : %.2f F", TempInF);
+                  }
                   if (--z < -106) {
                     z = matrix.width();
                     if (++y >= 3) {
@@ -298,14 +305,15 @@ void loop()
                 }
 
 
-                if (abs(AvgAccZ) > 0.4) //return back to main menu
+                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
-
+                  ButtonPressedAtLeastOnce=0;
                   break;
 
                 }
 
               }
+              break;
             }
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
               case_code += 1;
@@ -391,6 +399,7 @@ void loop()
                   TempSum += TempOverLast24Hours[j];
                 }
                 AvgTemp = TempSum / 24;
+                AvgTempInF = (AvgTemp * 1.8) + 32;
 
 
 
@@ -409,7 +418,13 @@ void loop()
 
                   matrix.fillScreen(0);
                   matrix.setCursor(z, 0);
-                  matrix.printf("AVG TEMP: % .2f C", AvgTemp);
+                  if (TempInC == true) {
+                    matrix.printf("AVG TEMP: % .2f C", AvgTemp);
+                  }
+                  else if (TempInC == false) {
+                    matrix.printf("AVG TEMP: % .2f F", AvgTempInF);
+                  }
+
                   if (--z < -106) {
                     z = matrix.width();
                     if (++y >= 3) {
@@ -424,12 +439,15 @@ void loop()
                 }
 
 
-                if (abs(AvgAccZ) > 0.4) //return back to main menu
+               if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
+                  ButtonPressedAtLeastOnce=0;
                   break;
+
                 }
 
               }
+              break;
             }
 
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
@@ -562,12 +580,15 @@ void loop()
 
 
 
-                if (abs(AvgAccZ) > 0.4) //return back to main menu
+              if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
+                  ButtonPressedAtLeastOnce=0;
                   break;
+
                 }
 
               }
+              break;
             }
 
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
@@ -634,11 +655,11 @@ void loop()
 
               if (CurrentTime - PreviousTime >= 12000) {
 
-                for (i=0;i<5;i++){
-                  for(j=0;j<5;j++){
-                    M5.dis.drawpix(i,j,0x000000);
-                    }
+                for (i = 0; i < 5; i++) {
+                  for (j = 0; j < 5; j++) {
+                    M5.dis.drawpix(i, j, 0x000000);
                   }
+                }
 
                 if (OldTemp1 >= 20 && OldTemp1 < 30) {
                   M5.dis.drawpix(3, 0, 0xff0000);
@@ -834,19 +855,21 @@ void loop()
                 M5.update();
 
                 TempCalc++;
-                if(TempCalc==4){
-                  TempCalc=0;
-                  }
+                if (TempCalc == 4) {
+                  TempCalc = 0;
+                }
 
               }
 
 
-           
 
-              if (abs(AvgAccZ) > 0.4) //return back to main menu
-              {
-                break;
-              }
+
+             if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
+                {
+                  ButtonPressedAtLeastOnce=0;
+                  break;
+
+                }
 
             }
 
@@ -891,6 +914,8 @@ void loop()
 
             if (M5.Btn.wasPressed()) {
 
+              M5.update();
+
               M5.dis.fillpix(0x000000);
 
               PreviousTime = millis();
@@ -919,7 +944,13 @@ void loop()
 
                   matrix.fillScreen(0);
                   matrix.setCursor(z, 0);
-                  matrix.printf("Mode 5");
+                  if ( TempInC == true) {
+                    matrix.printf("PRESS THE BUTTON FOR TEMP IN F");
+                  }
+                  else if (TempInC == false) {
+                    matrix.printf("PRESS THE BUTTON FOR TEMP IN C");
+                  }
+
                   if (--z < -76) {
                     z = matrix.width();
                     if (++y >= 3) {
@@ -931,12 +962,27 @@ void loop()
                   PreviousTime = millis();
                 }
 
-                if (abs(AvgAccZ) > 0.4) //return back to main menu
+                if (M5.Btn.wasPressed()) {
+
+                  if (TempInC == true) {
+                    TempInC = false;
+                  }
+                  if (TempInC == false) {
+                    TempInC = true;
+                  }
+                }
+
+
+
+                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
+                  ButtonPressedAtLeastOnce=0;
                   break;
+
                 }
 
               }
+              break;
             }
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
               case_code = 0;
