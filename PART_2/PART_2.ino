@@ -276,7 +276,8 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
-                  matrix.clear();
+                   matrix.fillScreen(0);
+                  
                   break;
 
                 }
@@ -416,7 +417,7 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
-                  matrix.clear();
+                 matrix.fillScreen(0);
                   break;
 
                 }
@@ -966,7 +967,7 @@ void loop()
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
                   ButtonPressedAtLeastOnce = 0;
-                  matrix.clear();
+                  matrix.fillScreen(0);
                   break;
 
                 }
