@@ -697,12 +697,13 @@ void loop()
 
                 if (CurrentTime - PreviousTime > 1850) {
                   if (TempInC == true) {
-                    j = AvgTemp;
+                    i = AvgTemp;
                   }
                   else if (TempInC == false) {
 
-                    j = TempInF;
+                    i = TempInF;
                   }
+                  j=i;
                   k = 0;
                   int c = 0;
                   while (j != 0)
@@ -718,7 +719,7 @@ void loop()
                     i /= 10;
                     j = 0;
                   }
-                  while (j < k) {
+                  while (j <jj) {
                     CurrentTime = millis();
                     if (dig[j] == 0) {
                       M5.dis.displaybuff(Char_0);
@@ -753,7 +754,7 @@ void loop()
 
                     if (CurrentTime - PreviousTime > 2250 && CurrentTime - PreviousTime < 2500) {
                       j = 1;
-                      if (j == k) {
+                      if (j == jj) {
                         PreviousTime = millis();
                         if (TempInC == true) {
                           M5.dis.displaybuff(Char_C);
@@ -768,7 +769,7 @@ void loop()
                     }
                     if (CurrentTime - PreviousTime > 2650 && CurrentTime - PreviousTime < 2900) {
                       j = 2;
-                      if (j == k) {
+                      if (j == jj) {
                         PreviousTime = millis();
                         if (TempInC == true) {
                           M5.dis.displaybuff(Char_C);
@@ -783,7 +784,7 @@ void loop()
                     }
                     if (CurrentTime - PreviousTime > 3250) {
                       j = 3;
-                      if (j == k) {
+                      if (j == jj) {
                         PreviousTime = millis();
                         if (TempInC == true) {
                           M5.dis.displaybuff(Char_C);
