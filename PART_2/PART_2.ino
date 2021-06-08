@@ -226,6 +226,7 @@ void loop()
     }
     PreviousTime = millis();
   }
+  M5.update();
 
   if (M5.Btn.wasPressed() || ButtonPressedAtLeastOnce == 1 ) {
     ButtonPressedAtLeastOnce = 1;
@@ -307,14 +308,18 @@ void loop()
 
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
-                  ButtonPressedAtLeastOnce=0;
+                  ButtonPressedAtLeastOnce = 0;
                   break;
 
                 }
 
               }
+
+            }
+            if (ButtonPressedAtLeastOnce == 0) {
               break;
             }
+
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
               case_code += 1;
 
@@ -439,14 +444,17 @@ void loop()
                 }
 
 
-               if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
+                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
-                  ButtonPressedAtLeastOnce=0;
+                  ButtonPressedAtLeastOnce = 0;
                   break;
 
                 }
 
               }
+
+            }
+            if (ButtonPressedAtLeastOnce == 0) {
               break;
             }
 
@@ -464,7 +472,6 @@ void loop()
             }
 
           }
-
 
         }
         break;
@@ -580,14 +587,17 @@ void loop()
 
 
 
-              if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
+                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
-                  ButtonPressedAtLeastOnce=0;
+                  ButtonPressedAtLeastOnce = 0;
                   break;
 
                 }
 
               }
+
+            }
+            if (ButtonPressedAtLeastOnce == 0) {
               break;
             }
 
@@ -630,6 +640,8 @@ void loop()
 
             if (M5.Btn.wasPressed()) {
 
+
+
               M5.dis.fillpix(0x000000);
 
               PreviousTime = millis();
@@ -639,240 +651,246 @@ void loop()
 
               }
 
+              for (;;) {
 
-              Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
 
-              int n_average = 15;
-              // Averaging 15 different acceleration data to determine when the object tilts
-              AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
-              AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
-              AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
+                Serial.printf("%.2f,%.2f,%.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
 
-              M5.IMU.getAccelData(&accX, &accY, &accZ);
-              M5.IMU.getTempData(&temp);
+                int n_average = 15;
+                // Averaging 15 different acceleration data to determine when the object tilts
+                AvgAccZ = ((AvgAccZ * (n_average - 1)) + accZ) / n_average;
+                AvgAccY = ((AvgAccY * (n_average - 1)) + accY) / n_average;
+                AvgAccX = ((AvgAccX * (n_average - 1)) + accX) / n_average;
 
-              CurrentTime = millis();
+                M5.IMU.getAccelData(&accX, &accY, &accZ);
+                M5.IMU.getTempData(&temp);
 
-              if (CurrentTime - PreviousTime >= 12000) {
+                CurrentTime = millis();
 
-                for (i = 0; i < 5; i++) {
-                  for (j = 0; j < 5; j++) {
-                    M5.dis.drawpix(i, j, 0x000000);
+                if (CurrentTime - PreviousTime >= 12000) {
+
+                  for (i = 0; i < 5; i++) {
+                    for (j = 0; j < 5; j++) {
+                      M5.dis.drawpix(i, j, 0x000000);
+                    }
                   }
-                }
 
-                if (OldTemp1 >= 20 && OldTemp1 < 30) {
-                  M5.dis.drawpix(3, 0, 0xff0000);
+                  if (OldTemp1 >= 20 && OldTemp1 < 30) {
+                    M5.dis.drawpix(3, 0, 0xff0000);
 
-                }
-
-                else if (OldTemp1 >= 30 && OldTemp1 < 35) {
-                  M5.dis.drawpix(3, 1, 0xff0000);
-
-                }
-
-                else if ( OldTemp1 >= 35 && OldTemp1 < 40) {
-                  M5.dis.drawpix(3, 2, 0xff0000);
-                }
-
-                else if ( OldTemp1 >= 35 && OldTemp1 < 40) {
-                  M5.dis.drawpix(3, 2, 0xff0000);
-                }
-
-                else if ( OldTemp1 >= 40 && OldTemp1 < 45) {
-                  M5.dis.drawpix(3, 3, 0xff0000);
-                }
-
-                else if ( OldTemp1 >= 45 && OldTemp1 < 50) {
-                  M5.dis.drawpix(3, 4, 0xff0000);
-                }
-
-                if (OldTemp2 >= 20 && OldTemp2 < 30) {
-                  M5.dis.drawpix(2, 0, 0xff0000);
-
-                }
-
-                else if (OldTemp2 >= 30 && OldTemp2 < 35) {
-                  M5.dis.drawpix(2, 1, 0xff0000);
-
-                }
-
-                else if ( OldTemp2 >= 35 && OldTemp2 < 40) {
-                  M5.dis.drawpix(2, 2, 0xff0000);
-                }
-
-                else if ( OldTemp2 >= 40 && OldTemp2 < 45) {
-                  M5.dis.drawpix(2, 3, 0xff0000);
-                }
-
-                else if ( OldTemp2 >= 45 && OldTemp2 < 50) {
-                  M5.dis.drawpix(2, 4, 0xff0000);
-                }
-
-
-
-                if (OldTemp3 >= 20 && OldTemp3 < 30) {
-                  M5.dis.drawpix(1, 0, 0xff0000);
-
-                }
-
-                else if (OldTemp3 >= 30 && OldTemp3 < 35) {
-                  M5.dis.drawpix(1, 1, 0xff0000);
-
-                }
-
-                else if ( OldTemp3 >= 35 && OldTemp3 < 40) {
-                  M5.dis.drawpix(1, 2, 0xff0000);
-                }
-
-                else if ( OldTemp3 >= 40 && OldTemp3 < 45) {
-                  M5.dis.drawpix(1, 3, 0xff0000);
-                }
-
-                else if ( OldTemp3 >= 45 && OldTemp3 < 50) {
-                  M5.dis.drawpix(1, 4, 0xff0000);
-                }
-
-
-                if (OldTemp4 >= 20 && OldTemp4 < 30) {
-                  M5.dis.drawpix(0, 0, 0xff0000);
-
-                }
-
-                else if (OldTemp4 >= 30 && OldTemp4 < 35) {
-                  M5.dis.drawpix(0, 1, 0xff0000);
-
-                }
-
-                else if ( OldTemp4 >= 35 && OldTemp4 < 40) {
-                  M5.dis.drawpix(0, 2, 0xff0000);
-                }
-
-                else if ( OldTemp4 >= 40 && OldTemp4 < 45) {
-                  M5.dis.drawpix(0, 3, 0xff0000);
-                }
-
-                else if ( OldTemp4 >= 45 && OldTemp4 < 50) {
-                  M5.dis.drawpix(0, 4, 0xff0000);
-                }
-
-
-                if (temp >= 20 && temp < 30) {
-                  M5.dis.drawpix(4, 0, 0xff0000); // green
-                  if (TempCalc == 0) {
-                    OldTemp1 = temp;
                   }
-                  if (TempCalc == 1) {
-                    OldTemp2 = temp;
+
+                  else if (OldTemp1 >= 30 && OldTemp1 < 35) {
+                    M5.dis.drawpix(3, 1, 0xff0000);
+
                   }
-                  if (TempCalc == 2) {
-                    OldTemp3 = temp;
+
+                  else if ( OldTemp1 >= 35 && OldTemp1 < 40) {
+                    M5.dis.drawpix(3, 2, 0xff0000);
                   }
-                  if (TempCalc == 3) {
-                    OldTemp4 = temp;
+
+                  else if ( OldTemp1 >= 35 && OldTemp1 < 40) {
+                    M5.dis.drawpix(3, 2, 0xff0000);
+                  }
+
+                  else if ( OldTemp1 >= 40 && OldTemp1 < 45) {
+                    M5.dis.drawpix(3, 3, 0xff0000);
+                  }
+
+                  else if ( OldTemp1 >= 45 && OldTemp1 < 50) {
+                    M5.dis.drawpix(3, 4, 0xff0000);
+                  }
+
+                  if (OldTemp2 >= 20 && OldTemp2 < 30) {
+                    M5.dis.drawpix(2, 0, 0xff0000);
+
+                  }
+
+                  else if (OldTemp2 >= 30 && OldTemp2 < 35) {
+                    M5.dis.drawpix(2, 1, 0xff0000);
+
+                  }
+
+                  else if ( OldTemp2 >= 35 && OldTemp2 < 40) {
+                    M5.dis.drawpix(2, 2, 0xff0000);
+                  }
+
+                  else if ( OldTemp2 >= 40 && OldTemp2 < 45) {
+                    M5.dis.drawpix(2, 3, 0xff0000);
+                  }
+
+                  else if ( OldTemp2 >= 45 && OldTemp2 < 50) {
+                    M5.dis.drawpix(2, 4, 0xff0000);
                   }
 
 
+
+                  if (OldTemp3 >= 20 && OldTemp3 < 30) {
+                    M5.dis.drawpix(1, 0, 0xff0000);
+
+                  }
+
+                  else if (OldTemp3 >= 30 && OldTemp3 < 35) {
+                    M5.dis.drawpix(1, 1, 0xff0000);
+
+                  }
+
+                  else if ( OldTemp3 >= 35 && OldTemp3 < 40) {
+                    M5.dis.drawpix(1, 2, 0xff0000);
+                  }
+
+                  else if ( OldTemp3 >= 40 && OldTemp3 < 45) {
+                    M5.dis.drawpix(1, 3, 0xff0000);
+                  }
+
+                  else if ( OldTemp3 >= 45 && OldTemp3 < 50) {
+                    M5.dis.drawpix(1, 4, 0xff0000);
+                  }
+
+
+                  if (OldTemp4 >= 20 && OldTemp4 < 30) {
+                    M5.dis.drawpix(0, 0, 0xff0000);
+
+                  }
+
+                  else if (OldTemp4 >= 30 && OldTemp4 < 35) {
+                    M5.dis.drawpix(0, 1, 0xff0000);
+
+                  }
+
+                  else if ( OldTemp4 >= 35 && OldTemp4 < 40) {
+                    M5.dis.drawpix(0, 2, 0xff0000);
+                  }
+
+                  else if ( OldTemp4 >= 40 && OldTemp4 < 45) {
+                    M5.dis.drawpix(0, 3, 0xff0000);
+                  }
+
+                  else if ( OldTemp4 >= 45 && OldTemp4 < 50) {
+                    M5.dis.drawpix(0, 4, 0xff0000);
+                  }
+
+
+                  if (temp >= 20 && temp < 30) {
+                    M5.dis.drawpix(4, 0, 0xff0000); // green
+                    if (TempCalc == 0) {
+                      OldTemp1 = temp;
+                    }
+                    if (TempCalc == 1) {
+                      OldTemp2 = temp;
+                    }
+                    if (TempCalc == 2) {
+                      OldTemp3 = temp;
+                    }
+                    if (TempCalc == 3) {
+                      OldTemp4 = temp;
+                    }
+
+
+                  }
+
+
+                  else if (temp >= 30 && temp < 35) {
+
+                    M5.dis.drawpix(4, 1, 0xff0000); // green
+                    if (TempCalc == 0) {
+                      OldTemp1 = temp;
+                    }
+                    if (TempCalc == 1) {
+                      OldTemp2 = temp;
+                    }
+                    if (TempCalc == 2) {
+                      OldTemp3 = temp;
+                    }
+                    if (TempCalc == 3) {
+                      OldTemp4 = temp;
+                    }
+
+
+                  }
+
+
+                  else if (temp >= 35 && temp < 40) {
+                    M5.dis.drawpix(4, 2, 0xff0000); // green
+                    if (TempCalc == 0) {
+                      OldTemp1 = temp;
+                    }
+                    if (TempCalc == 1) {
+                      OldTemp2 = temp;
+                    }
+                    if (TempCalc == 2) {
+                      OldTemp3 = temp;
+                    }
+                    if (TempCalc == 3) {
+                      OldTemp4 = temp;
+                    }
+
+
+                  }
+                  else if (temp >= 40 && temp < 45) {
+                    M5.dis.drawpix(4, 3, 0xff0000); // green
+                    if (TempCalc == 0) {
+                      OldTemp1 = temp;
+                    }
+                    if (TempCalc == 1) {
+                      OldTemp2 = temp;
+                    }
+                    if (TempCalc == 2) {
+                      OldTemp3 = temp;
+                    }
+                    if (TempCalc == 3) {
+                      OldTemp4 = temp;
+                    }
+
+
+                  }
+                  else if (temp >= 45 && temp < 50) {
+                    M5.dis.drawpix(4, 4, 0xff0000); // green
+                    if (TempCalc == 0) {
+                      OldTemp1 = temp;
+                    }
+                    if (TempCalc == 1) {
+                      OldTemp2 = temp;
+                    }
+                    if (TempCalc == 2) {
+                      OldTemp3 = temp;
+                    }
+                    if (TempCalc == 3) {
+                      OldTemp4 = temp;
+                    }
+
+
+                  }
+                  PreviousTime = millis();
+
+
+
+
+
+
+                  TempCalc++;
+                  if (TempCalc == 4) {
+                    TempCalc = 0;
+                  }
+
                 }
 
 
-                else if (temp >= 30 && temp < 35) {
-
-                  M5.dis.drawpix(4, 1, 0xff0000); // green
-                  if (TempCalc == 0) {
-                    OldTemp1 = temp;
-                  }
-                  if (TempCalc == 1) {
-                    OldTemp2 = temp;
-                  }
-                  if (TempCalc == 2) {
-                    OldTemp3 = temp;
-                  }
-                  if (TempCalc == 3) {
-                    OldTemp4 = temp;
-                  }
 
 
-                }
-
-
-                else if (temp >= 35 && temp < 40) {
-                  M5.dis.drawpix(4, 2, 0xff0000); // green
-                  if (TempCalc == 0) {
-                    OldTemp1 = temp;
-                  }
-                  if (TempCalc == 1) {
-                    OldTemp2 = temp;
-                  }
-                  if (TempCalc == 2) {
-                    OldTemp3 = temp;
-                  }
-                  if (TempCalc == 3) {
-                    OldTemp4 = temp;
-                  }
-
-
-                }
-                else if (temp >= 40 && temp < 45) {
-                  M5.dis.drawpix(4, 3, 0xff0000); // green
-                  if (TempCalc == 0) {
-                    OldTemp1 = temp;
-                  }
-                  if (TempCalc == 1) {
-                    OldTemp2 = temp;
-                  }
-                  if (TempCalc == 2) {
-                    OldTemp3 = temp;
-                  }
-                  if (TempCalc == 3) {
-                    OldTemp4 = temp;
-                  }
-
-
-                }
-                else if (temp >= 45 && temp < 50) {
-                  M5.dis.drawpix(4, 4, 0xff0000); // green
-                  if (TempCalc == 0) {
-                    OldTemp1 = temp;
-                  }
-                  if (TempCalc == 1) {
-                    OldTemp2 = temp;
-                  }
-                  if (TempCalc == 2) {
-                    OldTemp3 = temp;
-                  }
-                  if (TempCalc == 3) {
-                    OldTemp4 = temp;
-                  }
-
-
-                }
-                PreviousTime = millis();
-
-
-
-
-                M5.update();
-
-                TempCalc++;
-                if (TempCalc == 4) {
-                  TempCalc = 0;
-                }
-
-              }
-
-
-
-
-             if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
+                if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
-                  ButtonPressedAtLeastOnce=0;
+                  ButtonPressedAtLeastOnce = 0;
                   break;
 
                 }
 
-            }
 
+              }
+            }
+            if (ButtonPressedAtLeastOnce == 0) {
+              break;
+            }
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
               case_code += 1;
 
@@ -976,12 +994,15 @@ void loop()
 
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {
-                  ButtonPressedAtLeastOnce=0;
+                  ButtonPressedAtLeastOnce = 0;
                   break;
 
                 }
 
               }
+
+            }
+            if (ButtonPressedAtLeastOnce == 0) {
               break;
             }
             if (AvgAccX > 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the right
