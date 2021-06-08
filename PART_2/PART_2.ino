@@ -951,7 +951,7 @@ void loop()
                     matrix.printf("PRESS THE BUTTON FOR TEMP IN C");
                   }
 
-                  if (--z < -76) {
+                  if (--z < -196) {
                     z = matrix.width();
                     if (++y >= 3) {
                       y = 0;
