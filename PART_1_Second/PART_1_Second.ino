@@ -1,15 +1,10 @@
 #include <M5Atom.h>
+
 #include <FastLED.h>
+
 #include <TimeLib.h>
 
-
 #define OneHour 3600000
-
-
-
-
-
-
 
 float accX = 0, accY = 0, accZ = 0;
 float temp = 0, TempCalc = 0, OldTemp1 = 40, OldTemp2 = 40, OldTemp3 = 40, OldTemp4 = 40, TempInF = 0, AvgTempInF = 0 ;
@@ -28,9 +23,6 @@ float AvgAccZ = 0.0F;
 unsigned long CurrentTime;
 unsigned long PreviousTime = 0;
 unsigned long TimeSinceLastTempReading = millis();
-
-
-
 
 
 unsigned char TempGraph[77] =
@@ -294,16 +286,13 @@ unsigned char Char_C[77] =
 
 
 
-
-
-
 void setup()
 {
   M5.begin(true, false, true);
 
   M5.IMU.Init();
 
-  
+
   M5.IMU.getTempData(&temp);
   i = 0;
   for (i = 0; i < 24; i++) {
@@ -703,7 +692,7 @@ void loop()
 
                     i = TempInF;
                   }
-                  j=i;
+                  j = i;
                   k = 0;
                   int c = 0;
                   while (j != 0)
@@ -719,7 +708,7 @@ void loop()
                     i /= 10;
                     j = 0;
                   }
-                  while (j <jj) {
+                  while (j < jj) {
                     CurrentTime = millis();
                     if (dig[j] == 0) {
                       M5.dis.displaybuff(Char_0);
@@ -1330,21 +1319,6 @@ void loop()
                   infinite_break = 1;
                   TempInC = true;
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 if (AvgAccZ > 0 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) > 0.9 && abs(AvgAccX) < 0.1) //return back to main menu
                 {

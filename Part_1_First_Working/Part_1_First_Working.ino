@@ -51,17 +51,17 @@ void setup() {
   attachInterrupt(main_btn.PIN, isr, FALLING); // Attaching the ISR to the button
 
   //initializing the matrix for displaying info
-  
+
 }
 
-int x=0;
+int x = 0;
 unsigned long CurrentTime;
 unsigned long PreviousTime;
 
 // Detecting constantly for pressed button, change the case accordingly.
 void loop() {
 
-
+  M5.update();
   float accX, accY, accZ;
 
   switch (main_btn.case_code)
@@ -98,7 +98,7 @@ void loop() {
 
 
         //code needed for scrolling text
-        
+
 
         if (main_btn.pressed) {
           main_btn.pressed = false;
@@ -121,7 +121,7 @@ void loop() {
           M5.dis.clear();
         }
 
-        
+
         if (main_btn.pressed) {
           main_btn.pressed = false;
           break;
@@ -136,56 +136,56 @@ void loop() {
     case 3:
 
       for (;;)
-      { x=0;
+      { x = 0;
         CurrentTime = millis();
         if (CurrentTime - PreviousTime >= interval1) {
-           setBuff(0xff, 0x00, 0x00);
+          setBuff(0xff, 0x00, 0x00);
           M5.dis.displaybuff(DisBuff); // Strobe with red colour
           PreviousTime = millis();
         }
         if (CurrentTime - PreviousTime >= interval2) {
           M5.dis.clear();
         }
-        
+
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Taking the 3D acceleration as a vector and calculating the square of its magnitude
         //Previous value = 6.25
-        if (accX * accX + accY * accY > 1) {
+        if (accX * accX + accZ * accZ > 1) {
           for (;;) {
-             setBuff(0xff, 0x00, 0x00);
-          M5.dis.displaybuff(DisBuff); // Strobe with red colour
+            setBuff(0xff, 0x00, 0x00);
+            M5.dis.displaybuff(DisBuff); // Strobe with red colour
             M5.IMU.getAccelData(&accX, &accY, &accZ);
             if (main_btn.pressed) {
               main_btn.pressed = false;
-              x=1;
+              x = 1;
 
               break;
             }
-            
 
-            if (accX * accX + accY * accY < 1) {
-                break;
-              }
+
+            if (accX * accX + accZ * accZ < 1) {
+              break;
+            }
 
           }
 
 
         }
-        if(x==1){
+        if (x == 1) {
           break;
-          }
+        }
 
         if (main_btn.pressed) {
-            main_btn.pressed = false;
-            break;
-          }
+          main_btn.pressed = false;
+          break;
+        }
       }
       break;
 
     case 4:
       for (;;)
       {
-        x=0;
+        x = 0;
         CurrentTime = millis();
         if (CurrentTime - PreviousTime >= interval1) {
           M5.dis.fillpix(0xffffff); // Strobe with white colour
@@ -194,38 +194,38 @@ void loop() {
         if (CurrentTime - PreviousTime >= interval2) {
           M5.dis.clear();
         }
-        
+
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Taking the 3D acceleration as a vector and calculating the square of its magnitude
         //Previous value = 6.25
-        if (accX * accX + accY * accY > 1) {
+        if (accX * accX + accZ * accZ > 1) {
           for (;;) {
             M5.dis.fillpix(0xffffff); // Strobe with white colour
             M5.IMU.getAccelData(&accX, &accY, &accZ);
             if (main_btn.pressed) {
               main_btn.pressed = false;
-              x=1;
+              x = 1;
 
               break;
             }
-            
 
-            if (accX * accX + accY * accY < 1) {
-                break;
-              }
+
+            if (accX * accX + accZ * accZ < 1) {
+              break;
+            }
 
           }
 
 
         }
-        if(x==1){
+        if (x == 1) {
           break;
-          }
+        }
 
         if (main_btn.pressed) {
-            main_btn.pressed = false;
-            break;
-          }
+          main_btn.pressed = false;
+          break;
+        }
       }
       break;
 
@@ -234,5 +234,5 @@ void loop() {
 
 
   }
-  M5.update();
+
 }
