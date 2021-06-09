@@ -15,15 +15,15 @@ const char *password = "abcdefgh";
 WiFiServer server(80);
 
 #define count_interval 200
-#define one_hour 10000
+#define one_hour 3600000
 #define hrs_per_day 24
 
 int per_hour_fidget_counter[hrs_per_day] = {0}; // Providing an array of counts per hour over the most recent 24 hours
-float gyroX, gyroY, gyroZ1, gyroZ2; 
+float accX, accY, accZ;
 unsigned long CurrentTime, PreviousTime, CurrentHour, PreviousHour;
 
 void setup() {
-  
+
   M5.begin(true, false, true);
   M5.IMU.Init();
 
@@ -39,46 +39,41 @@ void setup() {
   server.begin();
 
   Serial.println("Server started");
-  
+
+  PreviousHour = millis();
+  PreviousTime = millis();
 }
 
 void loop() {
-  
-  // These functions collects number of fidgets in the most recent hour
-  PreviousHour = millis();
-  for (;CurrentHour - PreviousHour > one_hour;) {
-    CurrentTime = millis();
 
-    // This part of code lights up the LEDs when the spin is fast (strength indicator)
-    M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ1);
-    if (abs(gyroZ1) > 500) {
-      M5.dis.fillpix(0x00ff00); // Correct Red Colour in GRB Order
+  CurrentHour = millis();
+  CurrentTime = millis();
+
+  if (CurrentTime - PreviousTime > count_interval) {
+    M5.IMU.getAccelData(&accX, &accY, &accZ);
+
+    // Horizontal spinning event criteria
+    if (abs(accX) > 0.3 && abs(accY) > 0.3 && abs(accZ) > 0.9) {
+      per_hour_fidget_counter[hrs_per_day - 1] += 1; // These functions collects number of fidgets in the most recent hour
+      M5.dis.fillpix(0x00ff00); // Red colour
     }
 
     else {
       M5.dis.fillpix(0x000000); // Black screen
     }
+    PreviousTime = millis();
+  }
 
-    // This part of code records increase in absolute angular velocity (i.e. a fidget event)
-    if (CurrentTime - PreviousTime > count_interval) {
-      M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ2);
-      // Greater absolute angular velocity around Z axis when a fidget event occurs
-      if (abs(gyroZ2) > abs(gyroZ1)) {
-        per_hour_fidget_counter[hrs_per_day - 1] += 1;
-      }
-      PreviousTime = millis();
+  // This part serves updating the counter array every hour past, the array is only holding a maximum of 24 data.
+  if (CurrentHour - PreviousHour > one_hour) {
+    for (int i = 0; i < hrs_per_day - 1; i++) {
+      per_hour_fidget_counter[i] = per_hour_fidget_counter[i + 1];
     }
-    CurrentHour = millis(); 
+    per_hour_fidget_counter[hrs_per_day - 1] = 0;
+    PreviousHour = millis();
   }
 
-  // This loop overrights all elements in the counter array, capping the number of data entry at 24
-  for (int i = 0;i < hrs_per_day - 1;i++) {
-    per_hour_fidget_counter[i] = per_hour_fidget_counter[i+1];
-  }
-
-  // This array shall be uploaded online to reflect fidgeting event during the past 24 hours.
-
-
+  // WiFi and webpage setting
   WiFiClient client = server.available();   // listen for incoming clients
 
   if (client) {                             // if you get a client,
@@ -102,17 +97,17 @@ void loop() {
             // the content of the HTTP response follows the header:
             client.print(" <p>Fidget Spinner - Fidget Event Counter in the Latest 24 Hours (times per hour)</p>"); //INTERESTING PART 1
             client.print("Click <a href=\"/H\">here</a> to update fidget frequencies.<br>");
-            client.print("Click <a href=\"/L\">here</a> to turn OFF the LED.<br>");
+            client.println();
 
             // Printing the current collection of numbers of fidgets
-            for (int j = 0;j < 24;j++) {
+            for (int j = 0; j < 24; j++) {
               client.print(23 - j);
               client.print(" hrs ago: ");
               client.print(per_hour_fidget_counter[j]);
               client.print(" fidgets.<br>");
             }
-            
-            
+
+
             // The HTTP response ends with another blank line:
             client.println();
             // break out of the while loop:
@@ -124,16 +119,12 @@ void loop() {
           currentLine += c;      // add it to the end of the currentLine
         }
 
-        // Check to see if the client request was "GET /H" or "GET /L":
+        // Reflect in the serial port to see the webpage operation of updating current display
         if (currentLine.endsWith("GET /H")) {
           //INTERESTING PART 2
-          Serial.println("I AM HIGH");
+          Serial.println("Data updated.");
         }
-        if (currentLine.endsWith("GET /L")) {
-          //INTERESTING PART 3
-          Serial.println("I AM LOW");
 
-        }
       }
     }
     // close the connection:
