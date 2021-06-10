@@ -7,6 +7,9 @@ Code execution:
 
 Open Part_1_First_Working.ino in Part_1_First_Working folder in Arduino IDE. Set the development board to M5Stack Atom, with reference to instructions at https://docs.m5stack.com/en/arduino/arduino_development. Import M5Atom, FastLED and Time libraries from Sketch -> Load Library -> Manage Libraries if these libraries are not locally available. Set the baud rate to 115200 at Tools -> Upload speed. Press the -> button on the top right hand corner of the IDE to update the code to M5Stack Atom Matrix when this device is connected to the computer via a USB-C to USB cable. 
 
+Necessary libraries:
+M5Atom, FastLED, TimeLib.
+
 Modes available: 
 
 1. OFF Mode: where all LEDs are off. 
@@ -30,6 +33,9 @@ Part 1 Second: Temperature Measurement Complex
 Code execution:
 
 Open PART_1_Second.ino in PART_1_Second folder in Arduino IDE. The rest of necessary steps are the same as in Part 1 First.
+
+Necessary libraries:
+M5Atom, FastLED, TimeLib.
 
 Modes available:
 
@@ -67,6 +73,9 @@ M5Stack Atom Matrix is mounted on a predesigned PCB, housed in a spinner shaped 
 Code execution:
 
 Open Fidget_Spinner_Sensoring_Functions.ino in Fidget_Spinner_Sensoring_Functions in Arduino IDE. The rest of necessary steps are the same as in Part 1 First.
+
+Necessary Libraries:
+M5Atom, FastLED, WiFi, WiFiClient, WiFiAP.
 
 Functionalities:
 
