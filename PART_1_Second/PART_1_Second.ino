@@ -1343,7 +1343,7 @@ void loop()
 
 
 
-            if ( AvgAccX < 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the left
+            else if ( AvgAccX < 0 && abs(AvgAccX) > 0.9 && abs(AvgAccY) < 0.1 && abs(AvgAccZ) < 0.1) { //tilting to the left
               case_code -= 1;
 
               break;
